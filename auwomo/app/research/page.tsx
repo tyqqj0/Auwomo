@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Layers, Box, Film, Cpu } from "lucide-react";
+import { Layers, Box, Cpu, Brain, ShieldAlert } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from "next/image";
 
 export default function ResearchPage() {
   return (
@@ -16,10 +17,10 @@ export default function ResearchPage() {
           className="text-4xl md:text-5xl font-bold tracking-tight"
         >
           Generative Infrastructure for <br />
-          <span className="text-primary">Embodied Intelligence</span>
+          <span className="text-primary">Autonomous Driving</span>
         </motion.h1>
         <p className="text-xl text-muted-foreground">
-            We are redefining how autonomous systems learn by creating infinite, high-fidelity synthetic worlds.
+            We are redefining how autonomous systems learn by creating infinite, high-fidelity synthetic worlds and unified multimodal brains.
         </p>
       </section>
 
@@ -27,113 +28,178 @@ export default function ResearchPage() {
       <section>
         <Tabs defaultValue="simulation" className="w-full">
             <div className="flex justify-center mb-12">
-                <TabsList className="grid w-full max-w-2xl grid-cols-3 h-auto p-1">
-                    <TabsTrigger value="simulation" className="py-3">3D Simulation</TabsTrigger>
-                    <TabsTrigger value="fusion" className="py-3">Sensor Fusion</TabsTrigger>
-                    <TabsTrigger value="nas" className="py-3">Neural Arch</TabsTrigger>
+                <TabsList className="grid w-full max-w-2xl grid-cols-2 md:grid-cols-4 h-auto p-1">
+                    <TabsTrigger value="simulation" className="py-3">Generative World</TabsTrigger>
+                    <TabsTrigger value="multimodal" className="py-3">Multimodal Brain</TabsTrigger>
+                    <TabsTrigger value="concept" className="py-3">Concept Learning</TabsTrigger>
+                    <TabsTrigger value="safety" className="py-3">Safety & Risk</TabsTrigger>
                 </TabsList>
             </div>
 
+            {/* Tab 1: Simulation */}
             <TabsContent value="simulation" className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <div className="space-y-6">
                         <div className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-wider text-sm">
                             <Box className="w-4 h-4" />
-                            Core Tech I
+                            Core Pillar I
                         </div>
-                        <h2 className="text-3xl font-bold">High-Fidelity 3D Simulation</h2>
+                        <h2 className="text-3xl font-bold">Generative World Models</h2>
                         <p className="text-lg text-muted-foreground">
-                            Leveraging Implicit Neural Fields (NeRF/Gaussian Splatting) to reconstruct and generate photorealistic 3D environments. We won the ECCV 2024 Challenge for Extreme Case Generation.
+                            We use Generative AI to construct a data feedback loop framework. This creates large-scale simulation scenes including complex high-level rules (e.g. police gestures) and complete 3D ground truth.
                         </p>
                         <ul className="space-y-2 text-sm text-muted-foreground">
-                            <li className="flex items-center gap-2">✓ Physics-compliant rendering</li>
-                            <li className="flex items-center gap-2">✓ Editable road sketches</li>
-                            <li className="flex items-center gap-2">✓ Dynamic object insertion</li>
+                            <li className="flex items-center gap-2">✓ Static World Construction (BEVControl)</li>
+                            <li className="flex items-center gap-2">✓ Dynamic Video Synthesis (Unleashing)</li>
+                            <li className="flex items-center gap-2">✓ Closed-loop Self-Correction</li>
                         </ul>
                     </div>
-                    <div className="aspect-video bg-muted rounded-xl border flex items-center justify-center">
-                         <span className="text-muted-foreground">Simulation Visualization Placeholder</span>
+                    <div className="relative aspect-video rounded-xl overflow-hidden border border-border/50">
+                        <Image 
+                             src="/images/generative-world-sim.png" 
+                             alt="Generative World Simulation"
+                             fill
+                             className="object-cover"
+                        />
                     </div>
                 </div>
             </TabsContent>
 
-            <TabsContent value="fusion" className="space-y-8">
+            {/* Tab 2: Multimodal */}
+            <TabsContent value="multimodal" className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                     <div className="order-2 md:order-1 aspect-video bg-muted rounded-xl border flex items-center justify-center">
-                         <span className="text-muted-foreground">Fusion Tech Visualization</span>
+                     <div className="order-2 md:order-1 relative aspect-video rounded-xl overflow-hidden border border-border/50">
+                        <Image 
+                             src="/images/multimodal-perception.png" 
+                             alt="Multimodal Perception"
+                             fill
+                             className="object-cover"
+                        />
                     </div>
                     <div className="space-y-6 order-1 md:order-2">
                         <div className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-wider text-sm">
-                            <Layers className="w-4 h-4" />
-                            Core Tech II
+                            <Brain className="w-4 h-4" />
+                            Core Pillar II
                         </div>
-                        <h2 className="text-3xl font-bold">Multi-Modal Sensor Fusion</h2>
+                        <h2 className="text-3xl font-bold">Unified Multimodal Brain</h2>
                         <p className="text-lg text-muted-foreground">
-                            Pioneering BEVFusion technology (NeurIPS/CVPR) that seamlessly integrates LiDAR, Camera, and Radar data into a unified Bird's Eye View representation for robust perception.
+                            Understanding and generation are two sides of the same coin. We construct unified Multi-modal Large Language Models (MLLM) that disentangle semantic understanding from pixel-level generation.
                         </p>
                          <ul className="space-y-2 text-sm text-muted-foreground">
-                            <li className="flex items-center gap-2">✓ Unified BEV Representation</li>
-                            <li className="flex items-center gap-2">✓ Robust against sensor failure</li>
-                            <li className="flex items-center gap-2">✓ Real-time inference capability</li>
+                            <li className="flex items-center gap-2">✓ Unified Visual Tokenizer (DualToken)</li>
+                            <li className="flex items-center gap-2">✓ Generation-Enhanced Understanding</li>
+                            <li className="flex items-center gap-2">✓ Audio-Video-Text Integration</li>
                         </ul>
                     </div>
                 </div>
             </TabsContent>
 
-             <TabsContent value="nas" className="space-y-8">
+             {/* Tab 3: Concept Learning */}
+             <TabsContent value="concept" className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <div className="space-y-6">
                         <div className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-wider text-sm">
                             <Cpu className="w-4 h-4" />
-                            Core Tech III
+                            Core Pillar III
                         </div>
-                        <h2 className="text-3xl font-bold">Robust Neural Architecture Search</h2>
+                        <h2 className="text-3xl font-bold">Concept Learning</h2>
                         <p className="text-lg text-muted-foreground">
-                            Automating the design of neural networks to ensure stability and efficiency across varying hardware platforms and deployment scenarios.
+                            Moving beyond brute-force data accumulation. We enable autonomous agents to develop high-level conceptual understanding from training, similar to human intuition, for extreme data efficiency.
                         </p>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                            <li className="flex items-center gap-2">✓ Concept-Learning Module</li>
+                            <li className="flex items-center gap-2">✓ Long-tail Scenario Generalization</li>
+                            <li className="flex items-center gap-2">✓ Explainable Decision Making</li>
+                        </ul>
                     </div>
-                    <div className="aspect-video bg-muted rounded-xl border flex items-center justify-center">
-                         <span className="text-muted-foreground">Architecture Search Visualization</span>
+                    <div className="relative aspect-video rounded-xl overflow-hidden border border-border/50">
+                        <Image 
+                             src="/images/concept-learning.png" 
+                             alt="Concept Learning"
+                             fill
+                             className="object-cover"
+                        />
+                    </div>
+                </div>
+            </TabsContent>
+
+             {/* Tab 4: Safety */}
+             <TabsContent value="safety" className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                     <div className="order-2 md:order-1 relative aspect-video rounded-xl overflow-hidden border border-border/50">
+                        <Image 
+                             src="/images/safety-prediction.png" 
+                             alt="Safety Prediction"
+                             fill
+                             className="object-cover"
+                        />
+                    </div>
+                    <div className="space-y-6 order-1 md:order-2">
+                        <div className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-wider text-sm">
+                            <ShieldAlert className="w-4 h-4" />
+                            Core Pillar IV
+                        </div>
+                        <h2 className="text-3xl font-bold">Trajectory Risk Prediction</h2>
+                        <p className="text-lg text-muted-foreground">
+                            Enhancing Visual Language Models (VLM) with synthetic trajectory data to predict risks associated with planned paths, ensuring safety before action.
+                        </p>
+                         <ul className="space-y-2 text-sm text-muted-foreground">
+                            <li className="flex items-center gap-2">✓ Risk Foreseeing</li>
+                            <li className="flex items-center gap-2">✓ Safety-Critical Optimization</li>
+                            <li className="flex items-center gap-2">✓ DriveMRP Framework</li>
+                        </ul>
                     </div>
                 </div>
             </TabsContent>
         </Tabs>
       </section>
 
-      {/* Featured Products/Projects */}
+      {/* Featured Research Papers / Projects */}
       <section className="space-y-12">
-        <h2 className="text-3xl font-bold text-center">Featured Technologies</h2>
+        <h2 className="text-3xl font-bold text-center">Selected Research</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="overflow-hidden group">
-                <div className="h-48 bg-muted relative">
-                    <div className="absolute inset-0 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                        <Film className="w-12 h-12 text-muted-foreground/50" />
-                    </div>
-                </div>
+            <Card className="overflow-hidden group hover:border-accent/50 transition-colors">
                 <CardHeader>
-                    <CardTitle>Drive-SORA</CardTitle>
-                    <CardDescription>Generative World Model</CardDescription>
+                    <CardTitle>BEVControl</CardTitle>
+                    <CardDescription>ICCV 2023</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <p className="text-muted-foreground">
-                        Long-sequence, multi-view video generation specifically designed for driving scenarios. Capable of dreaming up consistent future frames based on control inputs.
+                        Accurate geometric generation of 3D scenes from bird's-eye view sketches, enabling controllable autonomous driving simulation.
                     </p>
                 </CardContent>
             </Card>
 
-            <Card className="overflow-hidden group">
-                <div className="h-48 bg-muted relative">
-                     <div className="absolute inset-0 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                        <Box className="w-12 h-12 text-muted-foreground/50" />
-                    </div>
-                </div>
+            <Card className="overflow-hidden group hover:border-accent/50 transition-colors">
                 <CardHeader>
-                    <CardTitle>BEVControl</CardTitle>
-                    <CardDescription>Controllable Scene Generation</CardDescription>
+                    <CardTitle>OmniGen</CardTitle>
+                    <CardDescription>Generative AI</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <p className="text-muted-foreground">
-                        A 3D detection generator that allows users to edit road sketches and layout, creating bespoke training data for specific edge cases.
+                        Unified generation of multimodal sensor data through shared BEV space, ensuring consistency across cameras and LiDARs.
+                    </p>
+                </CardContent>
+            </Card>
+             <Card className="overflow-hidden group hover:border-accent/50 transition-colors">
+                <CardHeader>
+                    <CardTitle>DriveMRP</CardTitle>
+                    <CardDescription>Safety Prediction</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-muted-foreground">
+                        Predicting potential risks of planned trajectories using large language models enhanced by synthetic data.
+                    </p>
+                </CardContent>
+            </Card>
+             <Card className="overflow-hidden group hover:border-accent/50 transition-colors">
+                <CardHeader>
+                    <CardTitle>DualToken</CardTitle>
+                    <CardDescription>Visual Tokenizer</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-muted-foreground">
+                         A unified visual tokenizer for both understanding and generation, achieving state-of-the-art performance in MLLM tasks.
                     </p>
                 </CardContent>
             </Card>
@@ -142,4 +208,3 @@ export default function ResearchPage() {
     </div>
   );
 }
-
