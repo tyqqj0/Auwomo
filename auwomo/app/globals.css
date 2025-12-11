@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Light Future Tape Theme */
+  --background: 60 5% 96%; /* Warm off-white, paper/tape texture base */
+  --foreground: 240 10% 20%; /* Faded ink black */
+
+  /* Surface colors */
+  --card: 60 5% 94%;
+  --card-foreground: 240 10% 20%;
+  --popover: 60 5% 96%;
+  --popover-foreground: 240 10% 20%;
+
+  /* Accents */
+  --primary: 240 10% 20%; /* Main text/action */
+  --primary-foreground: 60 5% 96%;
+  
+  --secondary: 240 5% 85%; /* Tape plastic gray */
+  --secondary-foreground: 240 10% 20%;
+
+  --muted: 240 5% 90%;
+  --muted-foreground: 240 5% 40%;
+
+  --accent: 140 30% 50%; /* Low-sat signal green */
+  --accent-foreground: 60 5% 96%;
+
+  --destructive: 0 40% 60%; /* Low-sat red */
+  --destructive-foreground: 60 5% 96%;
+
+  --border: 240 5% 85%;
+  --input: 240 5% 85%;
+  --ring: 240 5% 60%;
+
+  --radius: 0.2rem; /* Sharp, cassette-like corners */
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Optional Dark Mode - Inverted "Negative" look */
+  :root {
+    --background: 240 10% 10%;
+    --foreground: 60 5% 90%;
+
+    --card: 240 10% 12%;
+    --card-foreground: 60 5% 90%;
+    --popover: 240 10% 10%;
+    --popover-foreground: 60 5% 90%;
+
+    --primary: 60 5% 90%;
+    --primary-foreground: 240 10% 10%;
+
+    --secondary: 240 5% 20%;
+    --secondary-foreground: 60 5% 90%;
+
+    --muted: 240 5% 20%;
+    --muted-foreground: 240 5% 60%;
+
+    --accent: 140 30% 40%;
+    --accent-foreground: 60 5% 90%;
+
+    --destructive: 0 40% 50%;
+    --destructive-foreground: 60 5% 90%;
+
+    --border: 240 5% 20%;
+    --input: 240 5% 20%;
+    --ring: 240 5% 40%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Custom Utilities for "Tape" look */
+@layer utilities {
+  .noise-bg {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+  
+  .glass-panel {
+    @apply bg-white/50 backdrop-blur-md border border-white/20;
+  }
+}
