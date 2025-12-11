@@ -18,7 +18,7 @@ export default function AboutPage() {
             <span className="text-primary/80">Autonomous Intelligence</span>
           </h1>
           <p className="text-xl text-muted-foreground leading-relaxed">
-            Auwomo (Westlake Intelligence / 西湖数智) is a commercialization spin-off from the Autonomous Intelligence Lab at Westlake University. We are dedicated to building the generative infrastructure that powers the next generation of autonomous driving and embodied AI.
+            Auwomo is a commercialization spin-off from the Autonomous Intelligence Lab at Westlake University. We are dedicated to building the generative infrastructure that powers the next generation of autonomous driving.
           </p>
         </motion.div>
       </section>
