@@ -1,91 +1,126 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Brain, ShieldAlert, Cpu, Layers, Disc } from "lucide-react";
+import { useRef } from "react";
+import { ArrowRight, Brain, ShieldAlert, Cpu, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 export default function Home() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Track scroll progress of the hero container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+
+  // Animation transforms
+  // 1. Image: Starts at 55% height, then fades/blurs
+  // Adjusted opacity to stay visible a bit longer for smoother blend
+  const imageOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const imageBlur = useTransform(scrollYProgress, [0, 0.4], ["blur(0px)", "blur(12px)"]);
+  const imageScale = useTransform(scrollYProgress, [0, 0.4], [1, 1.05]);
+
+  // 2. Buttons: Move from below image (start) to below text (end)
+  // Adjusted start position to be closer to image bottom
+  const buttonTop = useTransform(scrollYProgress, [0, 0.4], ["58vh", "78vh"]);
+
+  // 3. Main Text: Reveals as we scroll
+  // Adjusted to overlap more smoothly
+  const textOpacity = useTransform(scrollYProgress, [0.15, 0.45], [0, 1]);
+  const textScale = useTransform(scrollYProgress, [0.15, 0.45], [0.95, 1]);
+  const textY = useTransform(scrollYProgress, [0.15, 0.45], [30, 0]);
+
   return (
-    <div className="flex flex-col items-center justify-center w-full overflow-hidden">
+    <div className="flex flex-col w-full">
 
-      {/* Hero Section */}
-      <section className="relative w-full min-h-[90vh] flex flex-col items-center justify-center text-center px-4 pt-20 pb-32 overflow-hidden">
-        {/* Background Elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-tr from-primary/10 to-accent/5 rounded-full blur-3xl opacity-50" />
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-3xl" />
-          {/* Subtle Grid Overlay */}
-          <div className="absolute inset-0 grid-bg opacity-30"></div>
+      {/* 
+        SCROLLYTELLING HERO SECTION 
+        Total height is 250vh to allow for a comfortable scroll "time" for the transition
+      */}
+      <div ref={containerRef} className="relative h-[250vh] w-full">
+
+        {/* Sticky Container */}
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center">
+
+          {/* Layer 1: Half-Screen Background Image */}
+          <motion.div
+            style={{ opacity: imageOpacity, filter: imageBlur, scale: imageScale }}
+            className="absolute top-0 left-0 right-0 h-[55vh] z-0"
+          >
+            <div className="relative w-full h-full">
+              <Image
+                src="/images/hero-banner-womo.png"
+                alt="Future of Autonomy"
+                fill
+                className="object-cover"
+                priority
+              />
+              {/* Improved Gradient Overlay for smoother transition */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+            </div>
+          </motion.div>
+
+          {/* Layer 2: The Reveal (Big Text) */}
+          <motion.div
+            style={{ opacity: textOpacity, scale: textScale, y: textY }}
+            className="absolute top-1/2 left-0 right-0 -translate-y-1/2 z-10 text-center px-4 max-w-5xl mx-auto mt-8"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-xs font-mono text-primary mb-6 backdrop-blur-sm mx-auto">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+              </span>
+              NEXT-GEN AUTONOMOUS DRIVING
+            </div>
+
+            <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-foreground leading-[1.1]">
+              Constructing the <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-300 to-yellow-300 font-extrabold">
+                World Model
+              </span>{" "}
+              for Driving
+            </h1>
+
+            <p className="mt-8 text-xl md:text-2xl text-muted-foreground/90 max-w-3xl mx-auto leading-relaxed font-light">
+              Auwomo pioneers data-driven world models to solve the long-tail challenges of autonomous driving.
+            </p>
+          </motion.div>
+
+          {/* Layer 3: Buttons (Floating) */}
+          <motion.div
+            style={{ top: buttonTop }}
+            className="absolute z-20 w-full flex flex-col items-center gap-6"
+          >
+            <div className="flex gap-4">
+              {/* Cleaner, more modern buttons */}
+              <Button size="lg" className="text-lg px-8 py-6 h-auto rounded-full shadow-lg hover:shadow-xl transition-all" asChild>
+                <Link href="/research">
+                  Our Technology
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="text-lg px-8 py-6 h-auto rounded-full border-2 hover:bg-muted/50 transition-all bg-background/80 backdrop-blur-sm" asChild>
+                <Link href="/about">
+                  About Auwomo
+                </Link>
+              </Button>
+            </div>
+          </motion.div>
+
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="relative z-10 max-w-5xl space-y-8 flex flex-col items-center"
-        >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-xs font-mono text-primary mb-4 backdrop-blur-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
-            </span>
-            NEXT-GEN AUTONOMOUS DRIVING
-          </div>
-
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground leading-[1.1]">
-            Constructing the <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-300 to-yellow-300 font-extrabold">
-              World Model
-            </span>{" "}
-            for Driving
-          </h1>
-
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Auwomo pioneers data-driven world models to solve the long-tail challenges of autonomous driving, enhancing rule understanding and safety through generative AI.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
-            <Button size="lg" className="group btn-retro" asChild>
-              <Link href="/research">
-                Our Technology
-                <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" className="btn-retro bg-transparent" asChild>
-              <Link href="/about">
-                About Auwomo
-              </Link>
-            </Button>
-          </div>
-        </motion.div>
-
-        {/* Abstract Tape/Loop Visual */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1 }}
-          className="absolute bottom-0 left-0 right-0 h-32 flex items-center justify-center opacity-20 pointer-events-none"
-        >
-          <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent relative">
-            <motion.div
-              animate={{ x: [-500, 500], opacity: [0, 1, 0] }}
-              transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-              className="absolute top-1/2 -translate-y-1/2 w-32 h-[2px] bg-accent blur-[2px]"
-            />
-          </div>
-        </motion.div>
-      </section>
+      </div>
 
       {/* Feature Showcase (Four Pillars) */}
-      <section className="w-full py-24 bg-muted/30 border-y border-border/50 relative">
+      <section className="w-full py-32 bg-background border-t border-border/50 relative z-30">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Research Pillars</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              We focus on bridging the gap between simulation and reality with four core technologies.
+          <div className="text-center mb-20 space-y-4">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Research Pillars</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+              We focus on bridging the gap between simulation and reality with core technologies.
             </p>
           </div>
 
@@ -100,7 +135,7 @@ export default function Home() {
               className="group"
             >
               <Card className="h-full overflow-hidden border-border/60 hover:border-primary/50 transition-colors bg-card/50 backdrop-blur-sm">
-                <div className="relative h-48 w-full overflow-hidden border-b border-border/20">
+                <div className="relative h-64 w-full overflow-hidden border-b border-border/20">
                   <div className="absolute inset-0 bg-primary/10 mix-blend-overlay z-10 group-hover:bg-transparent transition-all" />
                   <Image
                     src="/images/generative-world-sim.png"
@@ -132,7 +167,7 @@ export default function Home() {
               className="group"
             >
               <Card className="h-full overflow-hidden border-border/60 hover:border-primary/50 transition-colors bg-card/50 backdrop-blur-sm">
-                <div className="relative h-48 w-full overflow-hidden border-b border-border/20">
+                <div className="relative h-64 w-full overflow-hidden border-b border-border/20">
                   <div className="absolute inset-0 bg-primary/10 mix-blend-overlay z-10 group-hover:bg-transparent transition-all" />
                   <Image
                     src="/images/concept-learning.png"
@@ -164,7 +199,7 @@ export default function Home() {
               className="group"
             >
               <Card className="h-full overflow-hidden border-border/60 hover:border-primary/50 transition-colors bg-card/50 backdrop-blur-sm">
-                <div className="relative h-48 w-full overflow-hidden border-b border-border/20">
+                <div className="relative h-64 w-full overflow-hidden border-b border-border/20">
                   <div className="absolute inset-0 bg-primary/10 mix-blend-overlay z-10 group-hover:bg-transparent transition-all" />
                   <Image
                     src="/images/multimodal-perception.png"
@@ -192,7 +227,7 @@ export default function Home() {
       </section>
 
       {/* Trust/Stats Strip */}
-      <section className="w-full py-16 border-b border-border/50 bg-background">
+      <section className="w-full py-16 border-b border-border/50 bg-background relative z-30">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center items-center">
             <div className="space-y-2">
@@ -216,7 +251,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="w-full py-32 flex flex-col items-center text-center px-4 relative overflow-hidden">
+      <section className="w-full py-32 flex flex-col items-center text-center px-4 relative overflow-hidden bg-background z-30">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary/5 pointer-events-none" />
         <div className="relative z-10 space-y-8 max-w-3xl">
           <h2 className="text-4xl font-bold tracking-tight">Driving the Future</h2>
@@ -224,10 +259,10 @@ export default function Home() {
             Led by Dr. Kaicheng Yu, Auwomo is pushing the boundaries of what's possible in autonomous vehicle technology.
           </p>
           <div className="flex gap-4 justify-center">
-            <Button size="lg" className="btn-retro" asChild>
+            <Button size="lg" className="rounded-full px-8" asChild>
               <Link href="/contact">Partner With Us</Link>
             </Button>
-            <Button size="lg" variant="outline" className="btn-retro" asChild>
+            <Button size="lg" variant="outline" className="rounded-full px-8" asChild>
               <Link href="/team">Meet The Team</Link>
             </Button>
           </div>
