@@ -7,6 +7,7 @@ import { useRef } from "react";
 import { ArrowRight, Brain, ShieldAlert, Cpu, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import InteractiveRoad from "@/components/interactive-road";
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -44,12 +45,12 @@ export default function Home() {
       <div ref={containerRef} className="relative h-[250vh] w-full">
 
         {/* Sticky Container */}
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center">
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center bg-background">
 
           {/* Layer 1: Half-Screen Background Image */}
           <motion.div
             style={{ opacity: imageOpacity, filter: imageBlur, scale: imageScale }}
-            className="absolute top-0 left-0 right-0 h-[55vh] z-0"
+            className="absolute top-0 left-0 right-0 h-[55vh] z-10 pointer-events-none"
           >
             <div className="relative w-full h-full">
               <Image
@@ -64,10 +65,18 @@ export default function Home() {
             </div>
           </motion.div>
 
+          {/* Layer 0.5: Interactive Road Sim (Fills the bottom void) */}
+          {/* Positioned explicitly under the main image area */}
+          <div className="absolute top-[55vh] left-0 right-0 bottom-0 z-0">
+            <InteractiveRoad />
+            {/* Gradient blend at the top to merge with image */}
+            <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-background to-transparent pointer-events-none" />
+          </div>
+
           {/* Layer 2: The Reveal (Big Text) */}
           <motion.div
             style={{ opacity: textOpacity, scale: textScale, y: textY }}
-            className="absolute top-1/2 left-0 right-0 -translate-y-1/2 z-10 text-center px-4 max-w-5xl mx-auto mt-8"
+            className="absolute top-1/2 left-0 right-0 -translate-y-1/2 z-20 text-center px-4 max-w-5xl mx-auto mt-8 pointer-events-none"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-xs font-mono text-primary mb-6 backdrop-blur-sm mx-auto">
               <span className="relative flex h-2 w-2">
@@ -93,9 +102,9 @@ export default function Home() {
           {/* Layer 3: Buttons (Floating) */}
           <motion.div
             style={{ top: buttonTop }}
-            className="absolute z-20 w-full flex flex-col items-center gap-6"
+            className="absolute z-30 w-full flex flex-col items-center gap-6"
           >
-            <div className="flex gap-4">
+            <div className="flex gap-4 pointer-events-auto">
               {/* Cleaner, more modern buttons */}
               <Button size="lg" className="text-lg px-8 py-6 h-auto rounded-full shadow-lg hover:shadow-xl transition-all" asChild>
                 <Link href="/research">
