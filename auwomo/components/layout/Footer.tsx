@@ -6,9 +6,9 @@ export function Footer() {
       <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="md:col-span-2 space-y-4">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm rounded-sm">
+            {/* <div className="w-6 h-6 bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm rounded-sm">
                 A
-            </div>
+            </div> */}
             <span className="font-bold text-lg">Auwomo</span>
           </div>
           <p className="text-muted-foreground text-sm max-w-sm">
