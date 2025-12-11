@@ -35,6 +35,9 @@ export default function Home() {
   const textScale = useTransform(scrollYProgress, [0.15, 0.45], [0.95, 1]);
   const textY = useTransform(scrollYProgress, [0.15, 0.45], [30, 0]);
 
+  // 4. Road Opacity: Fades out as text appears so the "World Model" section is clean
+  const roadOpacity = useTransform(scrollYProgress, [0.15, 0.35], [1, 0]);
+
   return (
     <div className="flex flex-col w-full">
 
@@ -61,17 +64,21 @@ export default function Home() {
                 priority
               />
               {/* Improved Gradient Overlay for smoother transition */}
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+              {/* Using a bottom-aligned gradient for better control over the fade height */}
+              <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-background via-background/60 to-transparent" />
             </div>
           </motion.div>
 
           {/* Layer 0.5: Interactive Road Sim (Fills the bottom void) */}
           {/* Positioned explicitly under the main image area */}
-          <div className="absolute top-[55vh] left-0 right-0 bottom-0 z-0">
+          <motion.div
+            style={{ opacity: roadOpacity }}
+            className="absolute top-[55vh] left-0 right-0 bottom-0 z-0"
+          >
             <InteractiveRoad />
             {/* Gradient blend at the top to merge with image */}
             <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-background to-transparent pointer-events-none" />
-          </div>
+          </motion.div>
 
           {/* Layer 2: The Reveal (Big Text) */}
           <motion.div
