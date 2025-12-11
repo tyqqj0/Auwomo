@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   /* Light Future Tape Theme */
@@ -72,7 +70,7 @@
   * {
     border-color: hsl(var(--border));
   }
-  body {
+body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
     font-feature-settings: "rlig" 1, "calt" 1;
