@@ -32,7 +32,7 @@ export function Footer() {
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>Westlake University</li>
             <li>Hangzhou, China</li>
-            <li>contact@auwomo.ai</li>
+            <li>autolab.hr@westlake.edu.cn</li>
           </ul>
         </div>
       </div>

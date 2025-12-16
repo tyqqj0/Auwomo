@@ -112,12 +112,16 @@ export default function InteractiveRoad() {
       // ctx.stroke();
 
       // 2. Draw "AUWOMO" shaped ROAD (Horizontal)
+      // Position road in the upper third to sit between image and buttons
+      const roadY = canvas.height * 0.25;
+
       ctx.save();
-      ctx.translate(centerX, centerY);
+      ctx.translate(centerX, roadY);
 
       // Using the text as the "Road Surface"
       // We want it huge, spanning the width roughly
-      const fontSize = Math.min(canvas.width / 4, 300); // Responsive font size
+      // Responsive font size: smaller of 1/4 width or 200px (desktop max), but ensuring readability on mobile
+      const fontSize = Math.min(Math.max(canvas.width / 5, 50), 160);
       ctx.font = `900 ${fontSize}px sans-serif`; // Heavy weight for "road" feel
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -175,7 +179,7 @@ export default function InteractiveRoad() {
 
       // MAGNETIC LANE KEEPING (Horizontal Center Line)
       const magnetThreshold = 60; // Pixel distance to trigger magnet vertically
-      const laneY = centerY; // Center of the screen/text
+      const laneY = roadY; // Use new road position
 
       let isMagnetized = false;
       // We check Y distance for horizontal lane keeping

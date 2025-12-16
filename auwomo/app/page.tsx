@@ -27,7 +27,9 @@ export default function Home() {
 
   // 2. Buttons: Move from below image (start) to below text (end)
   // Adjusted start position to be closer to image bottom
-  const buttonTop = useTransform(scrollYProgress, [0, 0.4], ["60vh", "80vh"]);
+  // Mobile: Start closer to new 45vh image bottom
+  // Desktop: Start closer to 55vh image bottom
+  const buttonY = useTransform(scrollYProgress, [0, 0.4], ["0vh", "10vh"]);
 
   // 3. Main Text: Reveals as we scroll
   // Adjusted to overlap more smoothly
@@ -53,19 +55,19 @@ export default function Home() {
           {/* Layer 1: Half-Screen Background Image */}
           <motion.div
             style={{ opacity: imageOpacity, filter: imageBlur, scale: imageScale }}
-            className="absolute top-0 left-0 right-0 h-[55vh] z-10 pointer-events-none"
+            className="absolute top-0 left-0 right-0 h-[27vh] md:h-[55vh] z-10 pointer-events-none"
           >
             <div className="relative w-full h-full">
               <Image
                 src="/images/hero-banner-womo.png"
                 alt="Future of Autonomy"
                 fill
-                className="object-cover"
+                className="object-cover object-center"
                 priority
               />
               {/* Improved Gradient Overlay for smoother transition */}
               {/* Using a bottom-aligned gradient for better control over the fade height */}
-              <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-background via-background/60 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 h-32 md:h-48 bg-gradient-to-t from-background via-background/60 to-transparent" />
             </div>
           </motion.div>
 
@@ -73,17 +75,17 @@ export default function Home() {
           {/* Positioned explicitly under the main image area */}
           <motion.div
             style={{ opacity: roadOpacity }}
-            className="absolute top-[55vh] left-0 right-0 bottom-0 z-0"
+            className="absolute top-[27vh] md:top-[55vh] left-0 right-0 bottom-0 z-0"
           >
             <InteractiveRoad />
             {/* Gradient blend at the top to merge with image */}
-            <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-background to-transparent pointer-events-none" />
+            <div className="absolute top-0 left-0 right-0 h-16 md:h-24 bg-gradient-to-b from-background to-transparent pointer-events-none" />
           </motion.div>
 
           {/* Layer 2: The Reveal (Big Text) */}
           <motion.div
             style={{ opacity: textOpacity, scale: textScale, y: textY }}
-            className="absolute top-1/2 left-0 right-0 -translate-y-1/2 z-20 text-center px-4 max-w-5xl mx-auto mt-8 pointer-events-none"
+            className="absolute top-[40%] md:top-1/2 left-0 right-0 -translate-y-1/2 z-20 text-center px-4 max-w-5xl mx-auto mt-8 pointer-events-none"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-xs font-mono text-primary mb-6 backdrop-blur-sm mx-auto">
               <span className="relative flex h-2 w-2">
@@ -93,7 +95,7 @@ export default function Home() {
               NEXT-GEN AUTONOMOUS DRIVING
             </div>
 
-            <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-foreground leading-[1.1]">
+            <h1 className="text-4xl sm:text-5xl md:text-8xl font-bold tracking-tighter text-foreground leading-[1.1]">
               Constructing the <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-300 to-yellow-300 font-extrabold">
                 World Model
@@ -108,8 +110,8 @@ export default function Home() {
 
           {/* Layer 3: Buttons (Floating) */}
           <motion.div
-            style={{ top: buttonTop }}
-            className="absolute z-30 w-full flex flex-col items-center gap-6 px-4"
+            style={{ y: buttonY }}
+            className="absolute top-[60vh] md:top-[70vh] z-30 w-full flex flex-col items-center gap-6 px-4"
           >
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pointer-events-auto w-full sm:w-auto">
               {/* Cleaner, more modern buttons */}
