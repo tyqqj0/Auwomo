@@ -19,7 +19,7 @@ export default function AboutPage() {
             <span className="text-primary/80">具身智能未来</span>
           </h1>
           <p className="text-xl text-muted-foreground leading-relaxed">
-            Westlake Data Intelligence (西湖数据智能) 是源自西湖大学智能无人系统实验室的商业化衍生项目。我们致力于构建驱动下一代具身智能的核心生成式基础设施。
+            Westlake Data Intelligence 是源自西湖大学智能无人系统实验室的商业化衍生项目。我们致力于构建驱动下一代具身智能的核心生成式基础设施。
           </p>
         </motion.div>
       </section>

@@ -4,7 +4,7 @@
 将原有的自动驾驶 (Autonomous Driving) 垂直领域网站，转型为 **具身智能 (Embodied Intelligence)** 与 **数据智能 (Data Intelligence)** 的综合展示平台。
 核心理念从 "Drive" (驾驶) 扩展至 "Act & Interact" (行动与交互)。
 
-**新名称**: Westlake Data Intelligence (西湖数据智能)
+**新名称**: Westlake Data Intelligence
 **核心slogan**: 构建物理世界的通用智能基础设施 (Building General Infrastructure for the Physical World)
 
 ## 2. 视觉与设计风格 (Visual Identity)

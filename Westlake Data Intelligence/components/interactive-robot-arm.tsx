@@ -20,11 +20,13 @@ export default function InteractiveRobotArm() {
   const { theme } = useTheme();
 
   // Store RAW mouse position (screen coordinates)
-  // This allows us to re-calculate relative position even if the canvas scrolls/moves
-  const mouseRawRef = useRef({ clientX: 0, clientY: 0, isActive: false });
-  
+  const mouseRawRef = useRef({ clientX: 0, clientY: 0, isActive: false, isPressed: false });
+
   // Current interpolated position of the end effector (in Canvas Space)
   const currentRef = useRef({ x: 0, y: 0 });
+
+  // Gripper State (0 = Open, 1 = Closed)
+  const gripperStateRef = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -35,14 +37,13 @@ export default function InteractiveRobotArm() {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let time = 0; 
+    let time = 0;
 
-    // Arm Configuration - LARGE scale
-    // Tuned for a "Giant" feel
+    // Arm Configuration - EVEN LARGER
     const segments: ArmSegment[] = [
-      { length: 400, angle: -Math.PI / 2, width: 70 }, // Huge Upper Arm
-      { length: 320, angle: 0.5, width: 50 },          // Huge Forearm
-      { length: 160, angle: -0.5, width: 35 },         // Hand
+      { length: 420, angle: -Math.PI / 2, width: 80 }, // Massive Upper Arm
+      { length: 340, angle: 0.5, width: 60 },          // Heavy Forearm
+      { length: 180, angle: -0.5, width: 40 },         // Hand/Wrist Base
     ];
 
     const basePosition: Point = { x: 0, y: 0 };
@@ -50,11 +51,12 @@ export default function InteractiveRobotArm() {
     const getColors = () => {
       const isDark = theme === "dark" || (theme === "system" && window.matchMedia('(prefers-color-scheme: dark)').matches);
       return {
-        fill: isDark ? "rgba(255, 255, 255, 0.02)" : "rgba(37, 99, 235, 0.02)", 
-        skeleton: isDark ? "rgba(255, 255, 255, 0.12)" : "rgba(37, 99, 235, 0.15)",
+        fill: isDark ? "rgba(255, 255, 255, 0.02)" : "rgba(37, 99, 235, 0.02)",
+        skeleton: isDark ? "rgba(255, 255, 255, 0.15)" : "rgba(37, 99, 235, 0.18)",
         jointOuter: isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(37, 99, 235, 0.08)",
         jointInner: isDark ? "rgba(255, 255, 255, 0.8)" : "rgba(37, 99, 235, 0.8)",
-        accent: isDark ? "rgba(34, 211, 238, 0.8)" : "rgba(8, 145, 178, 0.8)",
+        accent: isDark ? "rgba(34, 211, 238, 0.9)" : "rgba(8, 145, 178, 0.9)",
+        claw: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(37, 99, 235, 0.1)", // Claw body
       };
     };
 
@@ -63,33 +65,25 @@ export default function InteractiveRobotArm() {
       canvas.width = container.clientWidth * dpr;
       canvas.height = container.clientHeight * dpr;
       ctx.scale(dpr, dpr);
-      
+
       const width = container.clientWidth;
       const height = container.clientHeight;
-      
-      // Position base using window height to ensure it's visible even if container is huge
-      // But we need it in Canvas coordinates.
-      // If container is 100vh, then container.clientHeight ~= window.innerHeight.
-      
-      // Robust positioning: Anchor to bottom-right of the CONTAINER
-      // assuming container is properly sized to the hero section.
-      
+
+      // Position base
       if (width > 768) {
-          basePosition.x = width * 0.85; 
-          basePosition.y = height + 50; // Just slightly off screen bottom
+        basePosition.x = width * 0.85;
+        basePosition.y = height + 80;
       } else {
-          basePosition.x = width * 0.5;
-          basePosition.y = height + 50;
+        basePosition.x = width * 0.5;
+        basePosition.y = height + 80;
       }
-      
+
       if (!mouseRawRef.current.isActive) {
-         // Default target if no mouse interaction yet
-         // Map a virtual "center" client position to canvas
-         const rect = canvas.getBoundingClientRect();
-         currentRef.current = { 
-             x: width * 0.3, 
-             y: height * 0.4 
-         };
+        const rect = canvas.getBoundingClientRect();
+        currentRef.current = {
+          x: width * 0.3,
+          y: height * 0.4
+        };
       }
     };
 
@@ -102,15 +96,25 @@ export default function InteractiveRobotArm() {
       mouseRawRef.current.isActive = true;
     };
 
+    const handleMouseDown = () => {
+      mouseRawRef.current.isPressed = true;
+    };
+
+    const handleMouseUp = () => {
+      mouseRawRef.current.isPressed = false;
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
 
     const updateIK = (targetX: number, targetY: number) => {
-      const maxIterations = 4; 
-      
+      const maxIterations = 4;
+
       let currentX = basePosition.x;
       let currentY = basePosition.y;
       const joints: Point[] = [{ x: currentX, y: currentY }];
-      
+
       for (let i = 0; i < segments.length; i++) {
         currentX += Math.cos(segments[i].angle) * segments[i].length;
         currentY += Math.sin(segments[i].angle) * segments[i].length;
@@ -121,37 +125,139 @@ export default function InteractiveRobotArm() {
         for (let i = segments.length - 1; i >= 0; i--) {
           const pivot = joints[i];
           const effector = joints[joints.length - 1];
-          
+
           const vToEffector = { x: effector.x - pivot.x, y: effector.y - pivot.y };
           const vToTarget = { x: targetX - pivot.x, y: targetY - pivot.y };
-          
+
           const angleToEffector = Math.atan2(vToEffector.y, vToEffector.x);
           const angleToTarget = Math.atan2(vToTarget.y, vToTarget.x);
-          
+
           let angleDiff = angleToTarget - angleToEffector;
-          
+
           while (angleDiff <= -Math.PI) angleDiff += 2 * Math.PI;
           while (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
-          
-          const stiffness = 0.04; // Heavy feel
+
+          const stiffness = 0.04;
           angleDiff *= stiffness;
 
           segments[i].angle += angleDiff;
-          
-          if (i === 0) {
-             // Constrain base to not fall backwards too much
-             // segments[i].angle = Math.max(-Math.PI, Math.min(-Math.PI/2 + 0.5, segments[i].angle));
-          }
 
           let jx = pivot.x;
           let jy = pivot.y;
           for (let k = i; k < segments.length; k++) {
-             jx += Math.cos(segments[k].angle) * segments[k].length;
-             jy += Math.sin(segments[k].angle) * segments[k].length;
-             joints[k+1] = { x: jx, y: jy };
+            jx += Math.cos(segments[k].angle) * segments[k].length;
+            jy += Math.sin(segments[k].angle) * segments[k].length;
+            joints[k + 1] = { x: jx, y: jy };
           }
         }
       }
+    };
+
+    // --- Drawing Helpers ---
+
+    const drawClaw = (ctx: CanvasRenderingContext2D, x: number, y: number, angle: number, colors: any, scale: number = 1.0, gripAmount: number) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(angle);
+      ctx.scale(scale, scale);
+
+      // Claw Base (Symmetric Hub)
+      ctx.beginPath();
+      // Draw a techy rectangle/box base
+      ctx.roundRect(-20, -30, 40, 60, 5);
+      ctx.fillStyle = colors.claw;
+      ctx.fill();
+      ctx.strokeStyle = colors.skeleton;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Draw 2 SYMMETRIC Fingers (Top and Bottom)
+      // gripAmount: 0 = Open, 1 = Closed
+
+      // Top Finger (rotates down to close)
+      // Open angle: -0.6 rad, Closed angle: -0.1 rad
+      const topAngle = -0.6 + (0.5 * gripAmount);
+      drawFinger(ctx, topAngle, 1, colors);
+
+      // Bottom Finger (rotates up to close)
+      // Open angle: 0.6 rad, Closed angle: 0.1 rad
+      const bottomAngle = 0.6 - (0.5 * gripAmount);
+      drawFinger(ctx, bottomAngle, -1, colors);
+
+      // Center Laser/Sensor Eye
+      ctx.beginPath();
+      ctx.arc(0, 0, 10, 0, Math.PI * 2);
+      ctx.fillStyle = colors.accent;
+      ctx.fill();
+      ctx.shadowBlur = 15 + (gripAmount * 20); // Glows brighter when gripping
+      ctx.shadowColor = colors.accent;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Energy Field between fingers when gripping
+      if (gripAmount > 0.5) {
+        ctx.beginPath();
+        ctx.moveTo(30, -10);
+        ctx.lineTo(30, 10);
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = gripAmount * 2;
+        ctx.globalAlpha = gripAmount * 0.5;
+        ctx.stroke();
+        ctx.globalAlpha = 1.0;
+      }
+
+      ctx.restore();
+    };
+
+    const drawFinger = (ctx: CanvasRenderingContext2D, rotation: number, mirror: number, colors: any) => {
+      ctx.save();
+      // Mirror: 1 for Top, -1 for Bottom (but actually just handling Y flip via rotation is easier if symmetric)
+      // Actually we just rotate. 
+      // Pivot point is at (0, 15*mirror) roughly, let's say (10, 20) and (10, -20)
+
+      const pivotY = 20 * (rotation < 0 ? -1 : 1);
+      // Or simply:
+      // Translate to pivot point on the hub
+      const py = rotation < 0 ? -25 : 25;
+      ctx.translate(0, py);
+      ctx.rotate(rotation);
+
+      // Finger Segment 1 (Base)
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(60, 0);
+      ctx.lineTo(50, 15 * (rotation < 0 ? 1 : -1)); // Taper inward
+      ctx.lineTo(10, 15 * (rotation < 0 ? 1 : -1));
+      ctx.closePath();
+      ctx.fillStyle = colors.claw;
+      ctx.fill();
+      ctx.strokeStyle = colors.skeleton;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Finger Segment 2 (Tip) - Hinged at end of Segment 1
+      ctx.translate(60, 0);
+      // Angle tip inwards slightly always
+      ctx.rotate(rotation < 0 ? 0.5 : -0.5);
+
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(50, 0); // Sharp tip
+      ctx.lineTo(40, 10 * (rotation < 0 ? 1 : -1));
+      ctx.lineTo(0, 10 * (rotation < 0 ? 1 : -1));
+      ctx.closePath();
+      ctx.fillStyle = colors.claw;
+      ctx.fill();
+      ctx.strokeStyle = colors.skeleton;
+      ctx.stroke();
+
+      // Glowing Pad
+      ctx.beginPath();
+      ctx.arc(45, 3 * (rotation < 0 ? 1 : -1), 3, 0, Math.PI * 2);
+      ctx.fillStyle = colors.accent;
+      ctx.fill();
+
+      ctx.restore();
     };
 
     const render = () => {
@@ -160,36 +266,39 @@ export default function InteractiveRobotArm() {
       const width = container.clientWidth;
       const height = container.clientHeight;
 
-      // 1. Calculate Target based on latest Client Mouse + Current Canvas Position
-      // This fixes the "scroll disconnect" issue
+      // Update Gripper State
+      const targetGrip = mouseRawRef.current.isPressed ? 1.0 : 0.0;
+      // Smooth transition
+      gripperStateRef.current += (targetGrip - gripperStateRef.current) * 0.2;
+
       let targetX = 0;
       let targetY = 0;
 
       if (mouseRawRef.current.isActive) {
-          const rect = canvas.getBoundingClientRect();
-          targetX = mouseRawRef.current.clientX - rect.left;
-          targetY = mouseRawRef.current.clientY - rect.top;
+        const rect = canvas.getBoundingClientRect();
+        targetX = mouseRawRef.current.clientX - rect.left;
+        targetY = mouseRawRef.current.clientY - rect.top;
       } else {
-          // Idle Animation Target
-          targetX = width * 0.3 + Math.sin(time) * 60;
-          targetY = height * 0.45 + Math.cos(time * 0.8) * 40;
+        // Idle Animation Target
+        targetX = width * 0.3 + Math.sin(time) * 60;
+        targetY = height * 0.45 + Math.cos(time * 0.8) * 40;
       }
 
-      // 2. Interpolate (Mass/Inertia)
+      // Interpolate (Mass/Inertia)
       const ease = 0.05;
       currentRef.current.x += (targetX - currentRef.current.x) * ease;
       currentRef.current.y += (targetY - currentRef.current.y) * ease;
 
-      // 3. Physics
+      // Physics
       updateIK(currentRef.current.x, currentRef.current.y);
 
-      // 4. Draw
+      // Draw
       ctx.clearRect(0, 0, width, height);
-      
+
       let currentX = basePosition.x;
       let currentY = basePosition.y;
       const joints: Point[] = [{ x: currentX, y: currentY }];
-      
+
       for (let i = 0; i < segments.length; i++) {
         currentX += Math.cos(segments[i].angle) * segments[i].length;
         currentY += Math.sin(segments[i].angle) * segments[i].length;
@@ -202,20 +311,20 @@ export default function InteractiveRobotArm() {
       // Layer 1: Glass Shell
       for (let i = 0; i < segments.length; i++) {
         const start = joints[i];
-        const end = joints[i+1];
-        
+        const end = joints[i + 1];
+
         ctx.beginPath();
         ctx.moveTo(start.x, start.y);
         ctx.lineTo(end.x, end.y);
-        ctx.lineWidth = segments[i].width * 2.5; 
-        ctx.strokeStyle = colors.fill; 
+        ctx.lineWidth = segments[i].width * 2.5;
+        ctx.strokeStyle = colors.fill;
         ctx.stroke();
       }
 
       // Layer 2: Skeleton
       for (let i = 0; i < segments.length; i++) {
         const start = joints[i];
-        const end = joints[i+1];
+        const end = joints[i + 1];
 
         // Main bone
         ctx.beginPath();
@@ -239,7 +348,7 @@ export default function InteractiveRobotArm() {
         ctx.strokeStyle = colors.skeleton;
         ctx.globalAlpha = 0.4;
         ctx.stroke();
-        
+
         ctx.beginPath();
         ctx.moveTo(start.x - nx * offset, start.y - ny * offset);
         ctx.lineTo(end.x - nx * offset, end.y - ny * offset);
@@ -266,33 +375,12 @@ export default function InteractiveRobotArm() {
         ctx.fill();
       });
 
-      // Layer 4: Effector
+      // Layer 4: THE CLAW (End Effector)
       const end = joints[joints.length - 1];
       const lastAngle = segments[segments.length - 1].angle;
-      
-      ctx.save();
-      ctx.translate(end.x, end.y);
-      ctx.rotate(lastAngle);
-      
-      // Scanner Ring
-      ctx.beginPath();
-      ctx.arc(0, 0, 30, 0, Math.PI * 2);
-      ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 2;
-      ctx.setLineDash([2, 10]);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      
-      // Core Light
-      ctx.beginPath();
-      ctx.arc(0, 0, 10, 0, Math.PI * 2);
-      ctx.fillStyle = colors.accent;
-      ctx.shadowBlur = 20;
-      ctx.shadowColor = colors.accent;
-      ctx.fill();
-      ctx.shadowBlur = 0;
 
-      ctx.restore();
+      // Draw the SYMMETRIC claw
+      drawClaw(ctx, end.x, end.y, lastAngle, colors, 1.3, gripperStateRef.current);
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -302,6 +390,8 @@ export default function InteractiveRobotArm() {
     return () => {
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
       cancelAnimationFrame(animationFrameId);
     };
   }, [theme]);

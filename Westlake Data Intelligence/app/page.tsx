@@ -18,7 +18,7 @@ export default function Home() {
         Foreground: Text Content
       */}
       <section className="relative w-full h-[100vh] overflow-hidden flex items-center">
-        
+
         {/* BACKGROUND LAYER: The Giant Machine */}
         {/* We allow pointer events on the background wrapper so mouse tracking works, 
             but the arm component itself sets pointer-events-none on the container 
@@ -26,13 +26,13 @@ export default function Home() {
             Here, we actually WANT mouse events to reach the window/canvas listener, 
             so we make this layer interactive but behind text. */}
         <div className="absolute inset-0 z-0">
-           {/* Subtle Grid for depth */}
-           <div className="absolute inset-0 grid-bg opacity-[0.15] pointer-events-none" />
-           <InteractiveRobotArm />
-           
-           {/* Gradients to fade edges */}
-           <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background to-transparent pointer-events-none" />
-           <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+          {/* Subtle Grid for depth */}
+          <div className="absolute inset-0 grid-bg opacity-[0.15] pointer-events-none" />
+          <InteractiveRobotArm />
+
+          {/* Gradients to fade edges */}
+          <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background to-transparent pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-background to-transparent pointer-events-none" />
         </div>
 
         {/* FOREGROUND LAYER: Content */}
@@ -61,8 +61,8 @@ export default function Home() {
               </h1>
 
               <p className="text-xl md:text-2xl text-muted-foreground/90 max-w-2xl leading-relaxed font-light">
-                Westlake Data Intelligence (西湖数据智能) <br className="hidden md:block"/>
-                构建下一代具身智能的生成式数据闭环，<br className="hidden md:block"/>
+                Westlake Data Intelligence <br className="hidden md:block" />
+                构建下一代具身智能的生成式数据闭环，<br className="hidden md:block" />
                 在数字孪生中孕育通用智能。
               </p>
 
