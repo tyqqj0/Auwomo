@@ -157,12 +157,12 @@ export function DataHubDiagram() {
                     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-background border-2 border-primary/20 rounded-2xl shadow-2xl z-10 flex flex-col items-center justify-center p-6 gap-4 backdrop-blur-xl"
                 >
                     <div className="absolute inset-0 bg-primary/5 rounded-2xl animate-pulse" />
-                    <h3 className="text-xl font-bold tracking-widest z-10">3D DATA HUB</h3>
+                    <h3 className="text-xl font-bold tracking-widest z-10">3D 数据中枢</h3>
                     <div className="grid grid-cols-2 gap-3 w-full z-10">
-                        <HubItem icon={Network} label="AI Labeling" />
-                        <HubItem icon={ScanLine} label="Auto Labeling" />
-                        <HubItem icon={Box} label="3D Recon" />
-                        <HubItem icon={Sparkles} label="Gen AI" />
+                        <HubItem icon={Network} label="AI 标注" />
+                        <HubItem icon={ScanLine} label="自动标注" />
+                        <HubItem icon={Box} label="3D 重建" />
+                        <HubItem icon={Sparkles} label="生成式 AI" />
                     </div>
                 </motion.div>
 
@@ -171,8 +171,8 @@ export function DataHubDiagram() {
                     variants={itemVariants}
                     className="top-0 left-0"
                     icon={Car}
-                    title="Vehicle Edge Model"
-                    labels={["New Data", "Training"]}
+                    title="车端/边缘模型"
+                    labels={["新数据", "模型训练"]}
                 />
 
                 {/* Top Right: Multimodal Auto-Labeling */}
@@ -180,8 +180,8 @@ export function DataHubDiagram() {
                     variants={itemVariants}
                     className="top-0 right-0"
                     icon={ScanLine}
-                    title="Multimodal Auto-Labeling"
-                    labels={["Training", "Validation"]}
+                    title="多模态自动标注"
+                    labels={["模型训练", "数据验证"]}
                 />
 
                 {/* Bottom Left: Multimodal 3D Reconstruction */}
@@ -189,8 +189,8 @@ export function DataHubDiagram() {
                     variants={itemVariants}
                     className="bottom-0 left-0"
                     icon={Box}
-                    title="Multimodal 3D Reconstruction"
-                    labels={["Scene Gen", "Recon"]}
+                    title="多模态 3D 重建"
+                    labels={["场景生成", "重建"]}
                 />
 
                 {/* Bottom Right: Generative World Model */}
@@ -198,15 +198,15 @@ export function DataHubDiagram() {
                     variants={itemVariants}
                     className="bottom-0 right-0"
                     icon={Globe}
-                    title="Generative World Model"
-                    labels={["Simulation", "Prediction"]}
+                    title="生成式世界模型"
+                    labels={["仿真模拟", "预测"]}
                 />
 
                 {/* Floating Labels on Paths (Simplified placement) */}
-                <FloatingLabel className="top-[25%] left-[30%]" text="Training" />
-                <FloatingLabel className="top-[25%] right-[30%]" text="Data Loop" />
-                <FloatingLabel className="bottom-[25%] left-[30%]" text="Scene Gen" />
-                <FloatingLabel className="bottom-[25%] right-[30%]" text="World Model" />
+                <FloatingLabel className="top-[25%] left-[30%]" text="模型训练" />
+                <FloatingLabel className="top-[25%] right-[30%]" text="数据闭环" />
+                <FloatingLabel className="bottom-[25%] left-[30%]" text="场景生成" />
+                <FloatingLabel className="bottom-[25%] right-[30%]" text="世界模型" />
 
             </motion.div>
         </div>

@@ -16,7 +16,7 @@ const advisors = [
     desc: "普林斯顿大学 (Princeton University)。NSF 杰出青年奖获得者。计算成像与光学专家。",
   },
   {
-    name: "Prof. Chengzhong Xu",
+    name: "须成忠教授",
     role: "战略顾问",
     desc: "澳门大学 (University of Macau) 讲座教授。IEEE Fellow。云计算与边缘计算领域的顶级专家。",
   },
