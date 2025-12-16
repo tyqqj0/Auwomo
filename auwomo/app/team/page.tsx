@@ -53,9 +53,12 @@ export default function TeamPage() {
           className="bg-secondary/5 border border-border rounded-2xl overflow-hidden"
         >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-8 items-center">
-            <div className="aspect-square bg-muted rounded-xl flex items-center justify-center">
-              <User className="w-24 h-24 text-muted-foreground/50" />
-              {/* Image placeholder */}
+            <div className="aspect-square bg-muted rounded-xl flex items-center justify-center overflow-hidden">
+              <img
+                src="/images/yukaicheng.png"
+                alt="Kaicheng Yu"
+                className="object-cover w-full h-full"
+              />
             </div>
             <div className="md:col-span-2 space-y-4">
               <div>
