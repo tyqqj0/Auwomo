@@ -11,6 +11,7 @@ interface Point {
 interface ArmSegment {
   length: number;
   angle: number;
+  width: number;
 }
 
 export default function InteractiveRobotArm() {
@@ -18,8 +19,12 @@ export default function InteractiveRobotArm() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
 
-  // Mouse tracking
-  const mouseRef = useRef({ x: 0, y: 0, isActive: false });
+  // Store RAW mouse position (screen coordinates)
+  // This allows us to re-calculate relative position even if the canvas scrolls/moves
+  const mouseRawRef = useRef({ clientX: 0, clientY: 0, isActive: false });
+  
+  // Current interpolated position of the end effector (in Canvas Space)
+  const currentRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -30,122 +35,114 @@ export default function InteractiveRobotArm() {
     if (!ctx) return;
 
     let animationFrameId: number;
-    
-    // Arm Configuration
-    // Base is at fixed position
-    // Arm consists of 3 segments
+    let time = 0; 
+
+    // Arm Configuration - LARGE scale
+    // Tuned for a "Giant" feel
     const segments: ArmSegment[] = [
-      { length: 140, angle: -Math.PI / 2 }, // Upper Arm
-      { length: 120, angle: 0 },            // Forearm
-      { length: 60, angle: 0 },             // Hand/Gripper
+      { length: 400, angle: -Math.PI / 2, width: 70 }, // Huge Upper Arm
+      { length: 320, angle: 0.5, width: 50 },          // Huge Forearm
+      { length: 160, angle: -0.5, width: 35 },         // Hand
     ];
 
-    const basePosition: Point = { x: 0, y: 0 }; // Will be set on resize
+    const basePosition: Point = { x: 0, y: 0 };
 
-    // Theme Colors
     const getColors = () => {
       const isDark = theme === "dark" || (theme === "system" && window.matchMedia('(prefers-color-scheme: dark)').matches);
       return {
-        background: "transparent",
-        primary: isDark ? "#60a5fa" : "#2563eb", // blue-400 / blue-600
-        accent: isDark ? "#22d3ee" : "#0891b2", // cyan-400 / cyan-600
-        joint: isDark ? "#ffffff" : "#ffffff",
-        link: isDark ? "rgba(96, 165, 250, 0.2)" : "rgba(37, 99, 235, 0.1)",
-        linkBorder: isDark ? "#60a5fa" : "#2563eb",
-        target: isDark ? "rgba(34, 211, 238, 0.5)" : "rgba(8, 145, 178, 0.5)",
+        fill: isDark ? "rgba(255, 255, 255, 0.02)" : "rgba(37, 99, 235, 0.02)", 
+        skeleton: isDark ? "rgba(255, 255, 255, 0.12)" : "rgba(37, 99, 235, 0.15)",
+        jointOuter: isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(37, 99, 235, 0.08)",
+        jointInner: isDark ? "rgba(255, 255, 255, 0.8)" : "rgba(37, 99, 235, 0.8)",
+        accent: isDark ? "rgba(34, 211, 238, 0.8)" : "rgba(8, 145, 178, 0.8)",
       };
     };
 
     const resize = () => {
-      canvas.width = container.clientWidth;
-      canvas.height = container.clientHeight;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = container.clientWidth * dpr;
+      canvas.height = container.clientHeight * dpr;
+      ctx.scale(dpr, dpr);
       
-      // Position base at bottom center
-      basePosition.x = canvas.width / 2;
-      basePosition.y = canvas.height * 0.85;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      
+      // Position base using window height to ensure it's visible even if container is huge
+      // But we need it in Canvas coordinates.
+      // If container is 100vh, then container.clientHeight ~= window.innerHeight.
+      
+      // Robust positioning: Anchor to bottom-right of the CONTAINER
+      // assuming container is properly sized to the hero section.
+      
+      if (width > 768) {
+          basePosition.x = width * 0.85; 
+          basePosition.y = height + 50; // Just slightly off screen bottom
+      } else {
+          basePosition.x = width * 0.5;
+          basePosition.y = height + 50;
+      }
+      
+      if (!mouseRawRef.current.isActive) {
+         // Default target if no mouse interaction yet
+         // Map a virtual "center" client position to canvas
+         const rect = canvas.getBoundingClientRect();
+         currentRef.current = { 
+             x: width * 0.3, 
+             y: height * 0.4 
+         };
+      }
     };
 
     window.addEventListener("resize", resize);
     resize();
 
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      mouseRef.current.x = e.clientX - rect.left;
-      mouseRef.current.y = e.clientY - rect.top;
-      mouseRef.current.isActive = true;
+      mouseRawRef.current.clientX = e.clientX;
+      mouseRawRef.current.clientY = e.clientY;
+      mouseRawRef.current.isActive = true;
     };
 
     window.addEventListener("mousemove", handleMouseMove);
 
-    // Inverse Kinematics (CCD - Cyclic Coordinate Descent)
     const updateIK = (targetX: number, targetY: number) => {
-      const tolerance = 1;
-      const maxIterations = 5; // Fast enough for real-time
+      const maxIterations = 4; 
       
-      // Calculate current end effector position
-      // We need to store joint positions to rotate around them
-      // But CCD works backwards from end-effector
+      let currentX = basePosition.x;
+      let currentY = basePosition.y;
+      const joints: Point[] = [{ x: currentX, y: currentY }];
       
+      for (let i = 0; i < segments.length; i++) {
+        currentX += Math.cos(segments[i].angle) * segments[i].length;
+        currentY += Math.sin(segments[i].angle) * segments[i].length;
+        joints.push({ x: currentX, y: currentY });
+      }
+
       for (let iter = 0; iter < maxIterations; iter++) {
-        // We simulate the forward kinematics to find joint positions
-        // Then iterate backwards from last segment to first
-        
-        // 1. Calculate all joint positions based on current angles
-        let currentX = basePosition.x;
-        let currentY = basePosition.y;
-        const joints: Point[] = [{ x: currentX, y: currentY }];
-        
-        for (let i = 0; i < segments.length; i++) {
-          currentX += Math.cos(segments[i].angle) * segments[i].length;
-          currentY += Math.sin(segments[i].angle) * segments[i].length;
-          joints.push({ x: currentX, y: currentY });
-        }
-        
-        const endEffector = joints[joints.length - 1];
-        const distToTarget = Math.hypot(targetX - endEffector.x, targetY - endEffector.y);
-        if (distToTarget < tolerance) break;
-        
-        // 2. Iterate backwards
-        // Index of the segment we are rotating (last to first)
         for (let i = segments.length - 1; i >= 0; i--) {
-          const jointIdx = i; // The pivot point for this segment is joints[i]
-          const pivot = joints[jointIdx];
-          const effectorIdx = joints.length - 1;
-          const effector = joints[effectorIdx];
+          const pivot = joints[i];
+          const effector = joints[joints.length - 1];
           
-          // Vector from pivot to effector
           const vToEffector = { x: effector.x - pivot.x, y: effector.y - pivot.y };
-          // Vector from pivot to target
           const vToTarget = { x: targetX - pivot.x, y: targetY - pivot.y };
           
           const angleToEffector = Math.atan2(vToEffector.y, vToEffector.x);
           const angleToTarget = Math.atan2(vToTarget.y, vToTarget.x);
           
-          // Rotate the segment by the difference
           let angleDiff = angleToTarget - angleToEffector;
           
-          // Normalize angle
           while (angleDiff <= -Math.PI) angleDiff += 2 * Math.PI;
           while (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
           
-          // Apply rotation with limit (damping) for smoothness
-          const maxRotation = 0.15; // Speed limit
-          angleDiff = Math.max(-maxRotation, Math.min(maxRotation, angleDiff));
-          
+          const stiffness = 0.04; // Heavy feel
+          angleDiff *= stiffness;
+
           segments[i].angle += angleDiff;
           
-          // Constraint checking (Optional: limit joint angles)
-          // For base joint (i=0), limit to upper hemisphere (-PI to 0) roughly
           if (i === 0) {
-             // Keep it roughly pointing up
-             // segments[i].angle = Math.max(-Math.PI + 0.2, Math.min(-0.2, segments[i].angle));
+             // Constrain base to not fall backwards too much
+             // segments[i].angle = Math.max(-Math.PI, Math.min(-Math.PI/2 + 0.5, segments[i].angle));
           }
-          
-          // Recalculate end effector for next iteration step (optional but better for CCD)
-          // For simplicity in simple JS, we just update the angle and let next frame/iteration handle full recalculation
-          // Or we can quickly update just the 'joints' array if we want 100% correct single-pass CCD
-          
-          // Quick update of downstream joints for the next loop iteration (crucial for CCD)
+
           let jx = pivot.x;
           let jy = pivot.y;
           for (let k = i; k < segments.length; k++) {
@@ -158,21 +155,37 @@ export default function InteractiveRobotArm() {
     };
 
     const render = () => {
+      time += 0.01;
       const colors = getColors();
-      
-      // Target
-      let targetX = mouseRef.current.isActive ? mouseRef.current.x : canvas.width / 2;
-      let targetY = mouseRef.current.isActive ? mouseRef.current.y : canvas.height / 3;
-      
-      // Smoothly interpolate target for less jitter
-      // (Simplified: just using mouse pos directly in updateIK for responsiveness)
-      
-      updateIK(targetX, targetY);
+      const width = container.clientWidth;
+      const height = container.clientHeight;
 
-      // Draw
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // 1. Calculate Target based on latest Client Mouse + Current Canvas Position
+      // This fixes the "scroll disconnect" issue
+      let targetX = 0;
+      let targetY = 0;
+
+      if (mouseRawRef.current.isActive) {
+          const rect = canvas.getBoundingClientRect();
+          targetX = mouseRawRef.current.clientX - rect.left;
+          targetY = mouseRawRef.current.clientY - rect.top;
+      } else {
+          // Idle Animation Target
+          targetX = width * 0.3 + Math.sin(time) * 60;
+          targetY = height * 0.45 + Math.cos(time * 0.8) * 40;
+      }
+
+      // 2. Interpolate (Mass/Inertia)
+      const ease = 0.05;
+      currentRef.current.x += (targetX - currentRef.current.x) * ease;
+      currentRef.current.y += (targetY - currentRef.current.y) * ease;
+
+      // 3. Physics
+      updateIK(currentRef.current.x, currentRef.current.y);
+
+      // 4. Draw
+      ctx.clearRect(0, 0, width, height);
       
-      // Calculate final joint positions
       let currentX = basePosition.x;
       let currentY = basePosition.y;
       const joints: Point[] = [{ x: currentX, y: currentY }];
@@ -183,46 +196,77 @@ export default function InteractiveRobotArm() {
         joints.push({ x: currentX, y: currentY });
       }
 
-      // Draw Base
-      ctx.fillStyle = colors.primary;
-      ctx.beginPath();
-      ctx.arc(basePosition.x, basePosition.y + 10, 20, Math.PI, 0); // Semicircle base
-      ctx.fill();
-
-      // Draw Segments
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
 
+      // Layer 1: Glass Shell
       for (let i = 0; i < segments.length; i++) {
         const start = joints[i];
         const end = joints[i+1];
         
-        // Link Body
         ctx.beginPath();
         ctx.moveTo(start.x, start.y);
         ctx.lineTo(end.x, end.y);
-        ctx.strokeStyle = colors.linkBorder;
-        ctx.lineWidth = 14 - i * 2; // Tapering width
-        ctx.stroke();
-        
-        // Inner Glow/Fill
-        ctx.strokeStyle = colors.link;
-        ctx.lineWidth = 10 - i * 2;
+        ctx.lineWidth = segments[i].width * 2.5; 
+        ctx.strokeStyle = colors.fill; 
         ctx.stroke();
       }
 
-      // Draw Joints
+      // Layer 2: Skeleton
+      for (let i = 0; i < segments.length; i++) {
+        const start = joints[i];
+        const end = joints[i+1];
+
+        // Main bone
+        ctx.beginPath();
+        ctx.moveTo(start.x, start.y);
+        ctx.lineTo(end.x, end.y);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = colors.skeleton;
+        ctx.stroke();
+
+        // Decorative rails
+        const dx = end.x - start.x;
+        const dy = end.y - start.y;
+        const dist = Math.hypot(dx, dy);
+        const nx = -dy / dist;
+        const ny = dx / dist;
+        const offset = segments[i].width * 0.5;
+
+        ctx.beginPath();
+        ctx.moveTo(start.x + nx * offset, start.y + ny * offset);
+        ctx.lineTo(end.x + nx * offset, end.y + ny * offset);
+        ctx.strokeStyle = colors.skeleton;
+        ctx.globalAlpha = 0.4;
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(start.x - nx * offset, start.y - ny * offset);
+        ctx.lineTo(end.x - nx * offset, end.y - ny * offset);
+        ctx.stroke();
+        ctx.globalAlpha = 1.0;
+      }
+
+      // Layer 3: Joints
       joints.forEach((joint, idx) => {
         ctx.beginPath();
-        ctx.arc(joint.x, joint.y, 6 - idx, 0, Math.PI * 2);
-        ctx.fillStyle = colors.joint;
+        ctx.arc(joint.x, joint.y, segments[idx]?.width || 20, 0, Math.PI * 2);
+        ctx.fillStyle = colors.jointOuter;
         ctx.fill();
-        ctx.strokeStyle = colors.primary;
-        ctx.lineWidth = 2;
+
+        ctx.beginPath();
+        ctx.arc(joint.x, joint.y, (segments[idx]?.width || 20) * 0.7, 0, Math.PI * 2);
+        ctx.strokeStyle = colors.skeleton;
+        ctx.lineWidth = 1;
         ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(joint.x, joint.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = colors.jointInner;
+        ctx.fill();
       });
 
-      // Draw End Effector (Gripper)
+      // Layer 4: Effector
       const end = joints[joints.length - 1];
       const lastAngle = segments[segments.length - 1].angle;
       
@@ -230,51 +274,25 @@ export default function InteractiveRobotArm() {
       ctx.translate(end.x, end.y);
       ctx.rotate(lastAngle);
       
-      // Gripper claws
+      // Scanner Ring
+      ctx.beginPath();
+      ctx.arc(0, 0, 30, 0, Math.PI * 2);
       ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 3;
-      
-      // Claw 1
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.lineTo(15, -10);
-      ctx.lineTo(25, -5);
+      ctx.lineWidth = 2;
+      ctx.setLineDash([2, 10]);
       ctx.stroke();
+      ctx.setLineDash([]);
       
-      // Claw 2
+      // Core Light
       ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.lineTo(15, 10);
-      ctx.lineTo(25, 5);
-      ctx.stroke();
-      
-      // Data Particles (Visual Flair)
-      // Draw a line from gripper to mouse if close
+      ctx.arc(0, 0, 10, 0, Math.PI * 2);
+      ctx.fillStyle = colors.accent;
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = colors.accent;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
       ctx.restore();
-      
-      // Target Reticle
-      if (mouseRef.current.isActive) {
-        ctx.beginPath();
-        ctx.arc(targetX, targetY, 8, 0, Math.PI * 2);
-        ctx.strokeStyle = colors.target;
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        
-        ctx.beginPath();
-        ctx.arc(targetX, targetY, 3, 0, Math.PI * 2);
-        ctx.fillStyle = colors.accent;
-        ctx.fill();
-        
-        // Dashed line from effector to target
-        ctx.beginPath();
-        ctx.moveTo(end.x, end.y);
-        ctx.lineTo(targetX, targetY);
-        ctx.strokeStyle = colors.target;
-        ctx.setLineDash([4, 4]);
-        ctx.lineWidth = 1;
-        ctx.stroke();
-        ctx.setLineDash([]);
-      }
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -289,9 +307,8 @@ export default function InteractiveRobotArm() {
   }, [theme]);
 
   return (
-    <div ref={containerRef} className="w-full h-full relative overflow-hidden pointer-events-auto">
-      <canvas ref={canvasRef} className="block w-full h-full" />
+    <div ref={containerRef} className="w-full h-full relative overflow-hidden pointer-events-none">
+      <canvas ref={canvasRef} className="block w-full h-full" style={{ width: '100%', height: '100%' }} />
     </div>
   );
 }
-
