@@ -38,8 +38,8 @@ export default function ResearchPage() {
 
             {/* Tab 1: Simulation */}
             <TabsContent value="simulation" className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    <div className="space-y-6">
+                <div className="flex flex-col items-center gap-8">
+                    <div className="w-full max-w-2xl space-y-6">
                         <div className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-wider text-sm">
                             <Box className="w-4 h-4" />
                             Core Pillar I
@@ -54,13 +54,16 @@ export default function ResearchPage() {
                             <li className="flex items-center gap-2">✓ Closed-loop Self-Correction</li>
                         </ul>
                     </div>
-                    <div className="relative aspect-video rounded-xl overflow-hidden border border-border/50">
-                        <Image 
-                             src="/images/generative-world-sim.png" 
-                             alt="Generative World Simulation"
-                             fill
-                             className="object-cover"
-                        />
+                    <div className="w-full">
+                        <div className="relative aspect-[4/1] rounded-xl overflow-hidden border border-border/50 w-full">
+                            <Image 
+                                src="/images/generative-world-sim.png" 
+                                alt="Generative World Simulation"
+                                fill
+                                className="object-cover"
+                                priority
+                            />
+                        </div>
                     </div>
                 </div>
             </TabsContent>
@@ -68,7 +71,7 @@ export default function ResearchPage() {
             {/* Tab 2: Multimodal */}
             <TabsContent value="multimodal" className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                     <div className="order-2 md:order-1 relative aspect-video rounded-xl overflow-hidden border border-border/50">
+                     <div className="order-2 md:order-1 relative aspect-[1.5/1] rounded-xl overflow-hidden border border-border/50">
                         <Image 
                              src="/images/multimodal-perception.png" 
                              alt="Multimodal Perception"
@@ -112,7 +115,7 @@ export default function ResearchPage() {
                             <li className="flex items-center gap-2">✓ Explainable Decision Making</li>
                         </ul>
                     </div>
-                    <div className="relative aspect-video rounded-xl overflow-hidden border border-border/50">
+                    <div className="relative aspect-[2.5/1] rounded-xl overflow-hidden border border-border/50">
                         <Image 
                              src="/images/concept-learning.png" 
                              alt="Concept Learning"
@@ -126,7 +129,7 @@ export default function ResearchPage() {
              {/* Tab 4: Safety */}
              <TabsContent value="safety" className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                     <div className="order-2 md:order-1 relative aspect-video rounded-xl overflow-hidden border border-border/50">
+                     <div className="order-2 md:order-1 relative aspect-[3.2/1] rounded-xl overflow-hidden border border-border/50">
                         <Image 
                              src="/images/safety-prediction.png" 
                              alt="Safety Prediction"
