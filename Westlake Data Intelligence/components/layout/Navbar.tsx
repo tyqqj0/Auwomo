@@ -8,11 +8,11 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { name: "Team", href: "/team" },
-  { name: "Research", href: "/research" },
-  { name: "Contact", href: "/contact" },
+  { name: "首页", href: "/" },
+  { name: "核心研究", href: "/research" },
+  { name: "团队成员", href: "/team" },
+  { name: "关于我们", href: "/about" },
+  { name: "联系合作", href: "/contact" },
 ];
 
 export function Navbar() {
@@ -20,15 +20,12 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed top-0 w-full z-50 border-b border-white/10 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
+    <nav className="fixed top-0 w-full z-50 border-b border-border/10 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-            {/* <div className="w-8 h-8 bg-primary text-primary-foreground flex items-center justify-center font-bold text-xl rounded-sm">
-                A
-            </div> */}
             <span className="font-bold text-lg tracking-tight group-hover:opacity-80 transition-opacity">
-                Auwomo
+                Westlake Data Intelligence
             </span>
         </Link>
 

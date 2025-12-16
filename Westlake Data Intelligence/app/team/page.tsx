@@ -7,18 +7,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 const advisors = [
   {
     name: "Prof. Luc Van Gool",
-    role: "Scientific Advisor",
-    desc: "CVLab Leader, ETH Zurich / KU Leuven. Pioneer in Computer Vision.",
+    role: "科学顾问",
+    desc: "苏黎世联邦理工学院 (ETH Zurich) / 鲁汶大学 (KU Leuven) 视觉实验室负责人。计算机视觉领域的先驱。",
   },
   {
     name: "Prof. Felix Heide",
-    role: "Scientific Advisor",
-    desc: "Princeton University. NSF Young Investigator Awardee. Computational Imaging Expert.",
+    role: "科学顾问",
+    desc: "普林斯顿大学 (Princeton University)。NSF 杰出青年奖获得者。计算成像与光学专家。",
   },
   {
     name: "Prof. Chengzhong Xu",
-    role: "Strategic Advisor",
-    desc: "University of Macau. IEEE Fellow. Expert in Cloud & Edge Computing.",
+    role: "战略顾问",
+    desc: "澳门大学 (University of Macau) 讲座教授。IEEE Fellow。云计算与边缘计算领域的顶级专家。",
   },
 ];
 
@@ -32,7 +32,7 @@ export default function TeamPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-4xl md:text-5xl font-bold tracking-tight"
         >
-          World-Class Team
+          世界级团队
         </motion.h1>
         <motion.p
           initial={{ opacity: 0 }}
@@ -40,7 +40,7 @@ export default function TeamPage() {
           transition={{ delay: 0.2 }}
           className="text-xl text-muted-foreground max-w-2xl mx-auto"
         >
-          Led by top-tier researchers and engineers from Westlake University, bridging the gap between academic innovation and industrial application.
+          由西湖大学的顶尖研究人员和工程师领衔，架起学术创新与工业应用之间的桥梁。
         </motion.p>
       </section>
 
@@ -62,14 +62,14 @@ export default function TeamPage() {
             </div>
             <div className="md:col-span-2 space-y-4">
               <div>
-                <h2 className="text-2xl font-bold">Kaicheng Yu</h2>
-                <p className="text-primary font-medium">Principal Investigator / Founder</p>
+                <h2 className="text-2xl font-bold">于开丞 (Kaicheng Yu)</h2>
+                <p className="text-primary font-medium">首席科学家 / 创始人</p>
               </div>
               <p className="text-muted-foreground">
-                Assistant Professor at Westlake University. His research focuses on robust neural architecture search, multi-modal sensor fusion, and generative world models for autonomous driving.
+                西湖大学工学院助理教授、博士生导师。他的研究方向集中在鲁棒神经架构搜索 (NAS)、多模态传感器融合以及自动驾驶的生成式世界模型。
               </p>
               <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
-                <span className="bg-background px-3 py-1 rounded-full border">Google Scholar Citations: 2500+</span>
+                <span className="bg-background px-3 py-1 rounded-full border">Google Scholar 引用: 2500+</span>
                 <span className="bg-background px-3 py-1 rounded-full border">CVPR / ICCV / NeurIPS</span>
               </div>
             </div>
@@ -80,7 +80,7 @@ export default function TeamPage() {
       {/* Advisors Section */}
       <section className="space-y-12">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">Scientific Advisors</h2>
+          <h2 className="text-2xl font-bold mb-2">科学顾问委员会</h2>
           <div className="h-1 w-12 bg-primary/50 mx-auto rounded-full" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -112,24 +112,23 @@ export default function TeamPage() {
           <div className="space-y-2">
             <Users className="w-8 h-8 mx-auto text-primary" />
             <h3 className="text-3xl font-bold">10+</h3>
-            <p className="text-muted-foreground">Core Researchers</p>
-            <p className="text-xs text-muted-foreground/60">PhDs & Research Assistants</p>
+            <p className="text-muted-foreground">核心研究人员</p>
+            <p className="text-xs text-muted-foreground/60">博士生 & 科研助理</p>
           </div>
           <div className="space-y-2">
             <Award className="w-8 h-8 mx-auto text-primary" />
             <h3 className="text-3xl font-bold">Top Tier</h3>
-            <p className="text-muted-foreground">Publications</p>
+            <p className="text-muted-foreground">顶级会议发表</p>
             <p className="text-xs text-muted-foreground/60">CVPR, ECCV, ICCV, NeurIPS</p>
           </div>
           <div className="space-y-2">
             <User className="w-8 h-8 mx-auto text-primary" />
             <h3 className="text-3xl font-bold">Industry</h3>
-            <p className="text-muted-foreground">Recognitions</p>
-            <p className="text-xs text-muted-foreground/60">Endorsed by Turing Award Winners</p>
+            <p className="text-muted-foreground">行业认可</p>
+            <p className="text-xs text-muted-foreground/60">图灵奖得主推荐</p>
           </div>
         </div>
       </section>
     </div>
   );
 }
-

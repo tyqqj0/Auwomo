@@ -16,11 +16,11 @@ export default function ResearchPage() {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-4xl md:text-5xl font-bold tracking-tight"
                 >
-                    Generative Infrastructure for <br />
-                    <span className="text-primary">Autonomous Driving</span>
+                    具身智能的 <br />
+                    <span className="text-primary">生成式基础设施</span>
                 </motion.h1>
                 <p className="text-xl text-muted-foreground">
-                    We are redefining how autonomous systems learn by creating infinite, high-fidelity synthetic worlds and unified multimodal brains.
+                    我们通过构建无限的高保真合成世界和统一的多模态大脑，重新定义自主智能系统的学习方式。
                 </p>
             </section>
 
@@ -29,10 +29,10 @@ export default function ResearchPage() {
                 <Tabs defaultValue="simulation" className="w-full">
                     <div className="flex justify-center mb-12">
                         <TabsList className="grid w-full max-w-2xl grid-cols-2 md:grid-cols-4 h-auto p-1">
-                            <TabsTrigger value="simulation" className="py-3">Generative World</TabsTrigger>
-                            <TabsTrigger value="multimodal" className="py-3">Multimodal Brain</TabsTrigger>
-                            <TabsTrigger value="concept" className="py-3">Concept Learning</TabsTrigger>
-                            <TabsTrigger value="safety" className="py-3">Safety & Risk</TabsTrigger>
+                            <TabsTrigger value="simulation" className="py-3">生成式世界</TabsTrigger>
+                            <TabsTrigger value="multimodal" className="py-3">多模态大脑</TabsTrigger>
+                            <TabsTrigger value="concept" className="py-3">概念学习</TabsTrigger>
+                            <TabsTrigger value="safety" className="py-3">安全与风险</TabsTrigger>
                         </TabsList>
                     </div>
 
@@ -42,23 +42,22 @@ export default function ResearchPage() {
                             <div className="w-full max-w-2xl space-y-6">
                                 <div className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-wider text-sm">
                                     <Box className="w-4 h-4" />
-                                    Core Pillar I
+                                    核心支柱 I
                                 </div>
-                                <h2 className="text-3xl font-bold">Generative World Models</h2>
+                                <h2 className="text-3xl font-bold">生成式世界模型</h2>
                                 <p className="text-lg text-muted-foreground">
-                                    We use Generative AI to construct a data feedback loop framework. This creates large-scale simulation scenes including complex high-level rules (e.g. police gestures) and complete 3D ground truth.
+                                    利用生成式 AI 构建数据反馈闭环框架。这创造了大规模的仿真场景，包含复杂的高层规则（如物理交互、因果逻辑）和完整的 3D Ground Truth。
                                 </p>
                                 <ul className="space-y-2 text-sm text-muted-foreground">
-                                    <li className="flex items-center gap-2">✓ Static World Construction (BEVControl)</li>
-                                    <li className="flex items-center gap-2">✓ Dynamic Video Synthesis (Unleashing)</li>
-                                    <li className="flex items-center gap-2">✓ Closed-loop Self-Correction</li>
+                                    <li className="flex items-center gap-2">✓ 静态世界构建 (BEVControl)</li>
+                                    <li className="flex items-center gap-2">✓ 动态视频合成 (Unleashing)</li>
+                                    <li className="flex items-center gap-2">✓ 闭环自校正机制</li>
                                 </ul>
                             </div>
 
-                            {/* Wide Diagram Display with Horizontal Scroll */}
+                            {/* Wide Diagram Display */}
                             <div className="w-full">
                                 <div className="relative rounded-xl overflow-hidden border border-border bg-card/50 shadow-sm group">
-                                    {/* Scrollable Container */}
                                     <div className="overflow-x-auto scrollbar-hide">
                                         <div className="relative min-w-[800px] md:min-w-full">
                                             <Image
@@ -71,13 +70,7 @@ export default function ResearchPage() {
                                             />
                                         </div>
                                     </div>
-
-                                    {/* Scroll Hint Overlay (Visible only if content overflows) */}
-                                    <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent pointer-events-none md:hidden" />
                                 </div>
-                                <p className="text-xs text-center text-muted-foreground mt-2 md:hidden">
-                                    Scroll horizontally to view full workflow
-                                </p>
                             </div>
                         </div>
                     </TabsContent>
@@ -96,16 +89,16 @@ export default function ResearchPage() {
                             <div className="space-y-6 order-1 md:order-2">
                                 <div className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-wider text-sm">
                                     <Brain className="w-4 h-4" />
-                                    Core Pillar II
+                                    核心支柱 II
                                 </div>
-                                <h2 className="text-3xl font-bold">Unified Multimodal Brain</h2>
+                                <h2 className="text-3xl font-bold">统一多模态大脑</h2>
                                 <p className="text-lg text-muted-foreground">
-                                    Understanding and generation are two sides of the same coin. We construct unified Multi-modal Large Language Models (MLLM) that disentangle semantic understanding from pixel-level generation.
+                                    理解与生成是硬币的两面。我们构建统一的多模态大语言模型 (MLLM)，解耦语义理解与像素级生成，赋予机器人真正的认知能力。
                                 </p>
                                 <ul className="space-y-2 text-sm text-muted-foreground">
-                                    <li className="flex items-center gap-2">✓ Unified Visual Tokenizer (DualToken)</li>
-                                    <li className="flex items-center gap-2">✓ Generation-Enhanced Understanding</li>
-                                    <li className="flex items-center gap-2">✓ Audio-Video-Text Integration</li>
+                                    <li className="flex items-center gap-2">✓ 统一视觉 Tokenizer (DualToken)</li>
+                                    <li className="flex items-center gap-2">✓ 生成增强的理解能力</li>
+                                    <li className="flex items-center gap-2">✓ 音视频-文本与动作的融合</li>
                                 </ul>
                             </div>
                         </div>
@@ -117,16 +110,16 @@ export default function ResearchPage() {
                             <div className="space-y-6">
                                 <div className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-wider text-sm">
                                     <Cpu className="w-4 h-4" />
-                                    Core Pillar III
+                                    核心支柱 III
                                 </div>
-                                <h2 className="text-3xl font-bold">Concept Learning</h2>
+                                <h2 className="text-3xl font-bold">概念学习</h2>
                                 <p className="text-lg text-muted-foreground">
-                                    Moving beyond brute-force data accumulation. We enable autonomous agents to develop high-level conceptual understanding from training, similar to human intuition, for extreme data efficiency.
+                                    超越单纯的数据堆砌。我们使智能体能够从训练中发展出类似于人类直觉的高级概念理解，实现极致的数据效率和泛化能力。
                                 </p>
                                 <ul className="space-y-2 text-sm text-muted-foreground">
-                                    <li className="flex items-center gap-2">✓ Concept-Learning Module</li>
-                                    <li className="flex items-center gap-2">✓ Long-tail Scenario Generalization</li>
-                                    <li className="flex items-center gap-2">✓ Explainable Decision Making</li>
+                                    <li className="flex items-center gap-2">✓ 概念学习模块</li>
+                                    <li className="flex items-center gap-2">✓ 长尾场景泛化 (Long-tail Generalization)</li>
+                                    <li className="flex items-center gap-2">✓ 可解释的决策过程</li>
                                 </ul>
                             </div>
                             <div className="relative aspect-[2.5/1] rounded-xl overflow-hidden border border-border/50">
@@ -154,16 +147,16 @@ export default function ResearchPage() {
                             <div className="space-y-6 order-1 md:order-2">
                                 <div className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-wider text-sm">
                                     <ShieldAlert className="w-4 h-4" />
-                                    Core Pillar IV
+                                    核心支柱 IV
                                 </div>
-                                <h2 className="text-3xl font-bold">Trajectory Risk Prediction</h2>
+                                <h2 className="text-3xl font-bold">轨迹风险预测</h2>
                                 <p className="text-lg text-muted-foreground">
-                                    Enhancing Visual Language Models (VLM) with synthetic trajectory data to predict risks associated with planned paths, ensuring safety before action.
+                                    利用合成轨迹数据增强视觉语言模型 (VLM)，预测规划路径的潜在风险，确保行动前的安全性，尤其是在复杂交互场景中。
                                 </p>
                                 <ul className="space-y-2 text-sm text-muted-foreground">
-                                    <li className="flex items-center gap-2">✓ Risk Foreseeing</li>
-                                    <li className="flex items-center gap-2">✓ Safety-Critical Optimization</li>
-                                    <li className="flex items-center gap-2">✓ DriveMRP Framework</li>
+                                    <li className="flex items-center gap-2">✓ 风险预见能力</li>
+                                    <li className="flex items-center gap-2">✓ 安全关键优化</li>
+                                    <li className="flex items-center gap-2">✓ DriveMRP 框架</li>
                                 </ul>
                             </div>
                         </div>
@@ -173,7 +166,7 @@ export default function ResearchPage() {
 
             {/* Featured Research Papers / Projects */}
             <section className="space-y-12">
-                <h2 className="text-3xl font-bold text-center">Selected Research</h2>
+                <h2 className="text-3xl font-bold text-center">精选研究成果</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <Card className="overflow-hidden group hover:border-accent/50 transition-colors">
                         <CardHeader>
@@ -182,7 +175,7 @@ export default function ResearchPage() {
                         </CardHeader>
                         <CardContent>
                             <p className="text-muted-foreground">
-                                Accurate geometric generation of 3D scenes from bird's-eye view sketches, enabling controllable autonomous driving simulation.
+                                从鸟瞰图草图精确生成 3D 场景几何，实现可控的自动驾驶与机器人仿真环境构建。
                             </p>
                         </CardContent>
                     </Card>
@@ -194,7 +187,7 @@ export default function ResearchPage() {
                         </CardHeader>
                         <CardContent>
                             <p className="text-muted-foreground">
-                                Unified generation of multimodal sensor data through shared BEV space, ensuring consistency across cameras and LiDARs.
+                                通过共享的 BEV 空间统一生成多模态传感器数据，确保跨相机和 LiDAR 的时空一致性。
                             </p>
                         </CardContent>
                     </Card>
@@ -205,7 +198,7 @@ export default function ResearchPage() {
                         </CardHeader>
                         <CardContent>
                             <p className="text-muted-foreground">
-                                Predicting potential risks of planned trajectories using large language models enhanced by synthetic data.
+                                利用合成数据增强的大语言模型，预测规划轨迹的潜在风险，提升具身智能的安全性。
                             </p>
                         </CardContent>
                     </Card>
@@ -216,7 +209,7 @@ export default function ResearchPage() {
                         </CardHeader>
                         <CardContent>
                             <p className="text-muted-foreground">
-                                A unified visual tokenizer for both understanding and generation, achieving state-of-the-art performance in MLLM tasks.
+                                用于理解和生成的统一视觉 Tokenizer，在 MLLM 任务中实现了最先进的性能。
                             </p>
                         </CardContent>
                     </Card>

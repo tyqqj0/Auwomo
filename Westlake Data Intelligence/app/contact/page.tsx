@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 export default function ContactPage() {
     const [formData, setFormData] = useState({
         name: "",
-        email: "", // While mailto doesn't strictly need this in the link (it uses the sender's client), it's good to include in the body
+        email: "",
         subject: "",
         message: ""
     });
@@ -19,9 +19,9 @@ export default function ContactPage() {
         e.preventDefault();
 
         const recipient = "autolab.hr@westlake.edu.cn";
-        const subject = encodeURIComponent(`[Auwomo Inquiry] ${formData.subject}`);
+        const subject = encodeURIComponent(`[合作咨询] ${formData.subject}`);
         const body = encodeURIComponent(
-            `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+            `姓名: ${formData.name}\n邮箱: ${formData.email}\n\n留言内容:\n${formData.message}`
         );
 
         window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
@@ -41,10 +41,10 @@ export default function ContactPage() {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-4xl md:text-5xl font-bold tracking-tight"
                 >
-                    Partner with Auwomo
+                    与我们合作
                 </motion.h1>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                    Whether you are an academic researcher, an industry partner in AD/Robotics, or an investor, we'd love to hear from you.
+                    无论您是学术研究人员、自动驾驶/机器人行业的合作伙伴，还是投资人，我们都期待听到您的声音。
                 </p>
             </section>
 
@@ -57,18 +57,18 @@ export default function ContactPage() {
                     className="space-y-12"
                 >
                     <div className="space-y-8">
-                        <h2 className="text-2xl font-bold">Get in Touch</h2>
+                        <h2 className="text-2xl font-bold">联系方式</h2>
 
                         <div className="flex items-start gap-4">
                             <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                                 <MapPin className="w-5 h-5 text-primary" />
                             </div>
                             <div>
-                                <h3 className="font-semibold mb-1">Visit Us</h3>
+                                <h3 className="font-semibold mb-1">来访地址</h3>
                                 <p className="text-muted-foreground">
-                                    Westlake University, School of Engineering<br />
-                                    600 Dunyu Road, Sandun Town<br />
-                                    Xihu District, Hangzhou, Zhejiang, China
+                                    浙江省杭州市西湖区墩余路600号<br />
+                                    西湖大学工学院<br />
+                                    (Sandun Town, Xihu District)
                                 </p>
                             </div>
                         </div>
@@ -78,7 +78,7 @@ export default function ContactPage() {
                                 <Mail className="w-5 h-5 text-primary" />
                             </div>
                             <div>
-                                <h3 className="font-semibold mb-1">Email Us</h3>
+                                <h3 className="font-semibold mb-1">电子邮件</h3>
                                 <p className="text-muted-foreground">
                                     autolab.hr@westlake.edu.cn
                                 </p>
@@ -90,21 +90,21 @@ export default function ContactPage() {
                                 <Building2 className="w-5 h-5 text-primary" />
                             </div>
                             <div>
-                                <h3 className="font-semibold mb-1">Industry Partnerships</h3>
+                                <h3 className="font-semibold mb-1">行业合作</h3>
                                 <p className="text-muted-foreground text-sm">
-                                    We are proud to collaborate with leading EV manufacturers and Embodied AI companies. Reach out to discuss pilot programs and data generation services.
+                                    我们与领先的电动汽车制造商和具身智能公司紧密合作。欢迎联系我们探讨试点项目和数据生成服务。
                                 </p>
                             </div>
                         </div>
                     </div>
 
                     <div className="p-6 rounded-xl bg-secondary/5 border border-border">
-                        <h3 className="font-bold mb-2">Join Our Team</h3>
+                        <h3 className="font-bold mb-2">加入我们的团队</h3>
                         <p className="text-sm text-muted-foreground mb-4">
-                            We are actively recruiting Research Scientists and Engineers with backgrounds in Generative Models, 3D Vision, and Rendering.
+                            我们正在积极招聘具有生成式模型、3D 视觉和神经渲染背景的研究科学家和工程师。
                         </p>
                         <Button variant="outline" className="gap-2">
-                            View Openings <ArrowRight className="w-4 h-4" />
+                            查看开放职位 <ArrowRight className="w-4 h-4" />
                         </Button>
                     </div>
                 </motion.div>
@@ -119,21 +119,21 @@ export default function ContactPage() {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <label htmlFor="name" className="text-sm font-medium">Name</label>
+                                <label htmlFor="name" className="text-sm font-medium">姓名</label>
                                 <Input
                                     id="name"
-                                    placeholder="John Doe"
+                                    placeholder="您的姓名"
                                     value={formData.name}
                                     onChange={handleChange}
                                     required
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label htmlFor="email" className="text-sm font-medium">Email</label>
+                                <label htmlFor="email" className="text-sm font-medium">电子邮箱</label>
                                 <Input
                                     id="email"
                                     type="email"
-                                    placeholder="john@example.com"
+                                    placeholder="name@example.com"
                                     value={formData.email}
                                     onChange={handleChange}
                                     required
@@ -142,10 +142,10 @@ export default function ContactPage() {
                         </div>
 
                         <div className="space-y-2">
-                            <label htmlFor="subject" className="text-sm font-medium">Subject</label>
+                            <label htmlFor="subject" className="text-sm font-medium">咨询主题</label>
                             <Input
                                 id="subject"
-                                placeholder="Collaboration Inquiry"
+                                placeholder="例如：技术合作咨询"
                                 value={formData.subject}
                                 onChange={handleChange}
                                 required
@@ -153,10 +153,10 @@ export default function ContactPage() {
                         </div>
 
                         <div className="space-y-2">
-                            <label htmlFor="message" className="text-sm font-medium">Message</label>
+                            <label htmlFor="message" className="text-sm font-medium">留言内容</label>
                             <Textarea
                                 id="message"
-                                placeholder="Tell us about your project or inquiry..."
+                                placeholder="请详细描述您的需求..."
                                 className="min-h-[150px]"
                                 value={formData.message}
                                 onChange={handleChange}
@@ -165,7 +165,7 @@ export default function ContactPage() {
                         </div>
 
                         <Button type="submit" className="w-full">
-                            Send Message
+                            发送消息
                         </Button>
                     </form>
                 </motion.div>
@@ -173,4 +173,3 @@ export default function ContactPage() {
         </div>
     );
 }
-

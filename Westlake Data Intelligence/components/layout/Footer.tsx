@@ -6,38 +6,36 @@ export function Footer() {
       <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="md:col-span-2 space-y-4">
           <div className="flex items-center gap-2">
-            {/* <div className="w-6 h-6 bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm rounded-sm">
-                A
-            </div> */}
-            <span className="font-bold text-lg">Auwomo</span>
+            <span className="font-bold text-lg">Westlake Data Intelligence</span>
           </div>
           <p className="text-muted-foreground text-sm max-w-sm">
-            Building the Generative Data Loop for Next-Gen Autonomous Intelligence.
-            Bridging simulation and reality with World Models.
+            构建具身智能的生成式数据闭环。
+            <br />
+            Building the Generative Data Loop for Embodied AI.
           </p>
         </div>
 
         <div className="space-y-4">
-          <h3 className="font-bold text-sm">Navigation</h3>
+          <h3 className="font-bold text-sm">导航</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li><Link href="/" className="hover:text-primary">Home</Link></li>
-            <li><Link href="/about" className="hover:text-primary">About Us</Link></li>
-            <li><Link href="/team" className="hover:text-primary">Team</Link></li>
-            <li><Link href="/research" className="hover:text-primary">Research</Link></li>
+            <li><Link href="/" className="hover:text-primary">首页</Link></li>
+            <li><Link href="/research" className="hover:text-primary">核心研究</Link></li>
+            <li><Link href="/team" className="hover:text-primary">团队成员</Link></li>
+            <li><Link href="/about" className="hover:text-primary">关于我们</Link></li>
           </ul>
         </div>
 
         <div className="space-y-4">
-          <h3 className="font-bold text-sm">Contact</h3>
+          <h3 className="font-bold text-sm">联系方式</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>Westlake University</li>
-            <li>Hangzhou, China</li>
+            <li>西湖大学工学院</li>
+            <li>浙江省杭州市西湖区墩余路600号</li>
             <li>autolab.hr@westlake.edu.cn</li>
           </ul>
         </div>
       </div>
       <div className="container mx-auto px-4 mt-12 pt-8 border-t border-border/50 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Auwomo / Westlake Intelligence. All rights reserved.
+        © {new Date().getFullYear()} Westlake Data Intelligence. All rights reserved.
       </div>
     </footer>
   );
