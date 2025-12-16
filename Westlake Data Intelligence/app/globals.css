@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+:root {
+  /* Westlake Data Intelligence Theme (Lab/Science) */
+  
+  /* Background: Ice White / Lab Cleanliness */
+  --background: 210 40% 98%; 
+  /* Foreground: Deep Ocean Blue (Text) */
+  --foreground: 222 47% 11%;
+
+  /* Card: Pure White with subtle shadow */
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+
+  /* Primary: Science Blue (Intellectual, Trust) */
+  --primary: 221 83% 53%;
+  --primary-foreground: 210 40% 98%;
+  
+  /* Secondary: Cool Gray (Subtle UI elements) */
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222 47% 11%;
+
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215 16% 47%;
+
+  /* Accent: Lab Cyan (Innovation, Energy) */
+  --accent: 189 94% 43%;
+  --accent-foreground: 210 40% 98%;
+
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 221 83% 53%;
+
+  --radius: 0.5rem; /* 8px - Modern, smooth rounding */
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Dark Mode: Deep Data Ocean */
+  :root {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 13%; /* Slightly lighter than bg */
+    --card-foreground: 210 40% 98%;
+    
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217 91% 60%; /* Brighter Blue for dark mode */
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 217 19% 27%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 19% 27%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 189 94% 43%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 19% 27%;
+    --input: 217 19% 27%;
+    --ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Enforce Sans for Modern Look, Mono only for data/code */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-geist-sans), sans-serif;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+  }
+}
+
+@layer utilities {
+  /* Clean Gradient Mesh instead of Noise */
+  .noise-bg {
+    position: relative;
+    background-image: 
+      radial-gradient(circle at 15% 50%, rgba(var(--primary), 0.08), transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(var(--accent), 0.08), transparent 25%);
+  }
+  .noise-bg::before {
+    display: none;
+  }
+
+  /* Modern Grid Background */
+  .grid-bg {
+    background-size: 50px 50px;
+    background-image:
+      linear-gradient(to right, rgba(var(--foreground), 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(var(--foreground), 0.03) 1px, transparent 1px);
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  }
+
+  .glass-panel {
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 
+      0 1px 2px rgba(0, 0, 0, 0.05),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Retro Button Style */
+  .btn-retro {
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--background));
+    box-shadow: 2px 2px 0px hsl(var(--border));
+    transition: all 0.1s ease;
+  }
+  .btn-retro:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px hsl(var(--border));
+  }
+}
