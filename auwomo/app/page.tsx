@@ -27,7 +27,7 @@ export default function Home() {
 
   // 2. Buttons: Move from below image (start) to below text (end)
   // Adjusted start position to be closer to image bottom
-  const buttonTop = useTransform(scrollYProgress, [0, 0.4], ["58vh", "78vh"]);
+  const buttonTop = useTransform(scrollYProgress, [0, 0.4], ["60vh", "80vh"]);
 
   // 3. Main Text: Reveals as we scroll
   // Adjusted to overlap more smoothly
@@ -109,17 +109,17 @@ export default function Home() {
           {/* Layer 3: Buttons (Floating) */}
           <motion.div
             style={{ top: buttonTop }}
-            className="absolute z-30 w-full flex flex-col items-center gap-6"
+            className="absolute z-30 w-full flex flex-col items-center gap-6 px-4"
           >
-            <div className="flex gap-4 pointer-events-auto">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pointer-events-auto w-full sm:w-auto">
               {/* Cleaner, more modern buttons */}
-              <Button size="lg" className="text-lg px-8 py-6 h-auto rounded-full shadow-lg hover:shadow-xl transition-all" asChild>
+              <Button size="lg" className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 h-auto rounded-full shadow-lg hover:shadow-xl transition-all" asChild>
                 <Link href="/research">
                   Our Technology
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 py-6 h-auto rounded-full border-2 hover:bg-muted/50 transition-all bg-background/80 backdrop-blur-sm" asChild>
+              <Button size="lg" variant="outline" className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 h-auto rounded-full border-2 hover:bg-muted/50 transition-all bg-background/80 backdrop-blur-sm" asChild>
                 <Link href="/about">
                   About Auwomo
                 </Link>
