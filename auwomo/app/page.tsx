@@ -156,10 +156,10 @@ export default function Home() {
                 <div className="relative h-64 w-full overflow-hidden border-b border-border/20">
                   <div className="absolute inset-0 bg-primary/10 mix-blend-overlay z-10 group-hover:bg-transparent transition-all" />
                   <Image
-                    src="/images/generative-world-sim.png"
+                    src="/images/gw-sim1.png"
                     alt="Generative World Model"
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105 filter grayscale-[20%] contrast-125"
+                    className="object-contain transition-transform duration-500 group-hover:scale-105 filter grayscale-[20%] contrast-125"
                   />
                 </div>
                 <CardHeader>
@@ -188,10 +188,10 @@ export default function Home() {
                 <div className="relative h-64 w-full overflow-hidden border-b border-border/20">
                   <div className="absolute inset-0 bg-primary/10 mix-blend-overlay z-10 group-hover:bg-transparent transition-all" />
                   <Image
-                    src="/images/concept-learning.png"
+                    src="/images/data-loop1.png"
                     alt="Data Loop System"
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105 filter grayscale-[20%] contrast-125"
+                    className="object-contain transition-transform duration-500 group-hover:scale-105 filter grayscale-[20%] contrast-125"
                   />
                 </div>
                 <CardHeader>
@@ -220,10 +220,10 @@ export default function Home() {
                 <div className="relative h-64 w-full overflow-hidden border-b border-border/20">
                   <div className="absolute inset-0 bg-primary/10 mix-blend-overlay z-10 group-hover:bg-transparent transition-all" />
                   <Image
-                    src="/images/multimodal-perception.png"
+                    src="/images/end-to-end1.png"
                     alt="End-to-End Autonomy"
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105 filter grayscale-[20%] contrast-125"
+                    className="object-contain transition-transform duration-500 group-hover:scale-105 filter grayscale-[20%] contrast-125"
                   />
                 </div>
                 <CardHeader>
