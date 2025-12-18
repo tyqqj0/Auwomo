@@ -63,7 +63,7 @@ export default function TeamPage() {
             <div className="md:col-span-2 space-y-4">
               <div>
                 <h2 className="text-2xl font-bold">于开丞 (Kaicheng Yu)</h2>
-                <p className="text-primary font-medium">首席科学家 / 创始人</p>
+                <p className="text-primary font-medium">首席执行官 / 创始人</p>
               </div>
               <p className="text-muted-foreground">
                 西湖大学工学院助理教授、博士生导师。他的研究方向集中在鲁棒神经架构搜索 (NAS)、多模态传感器融合以及自动驾驶的生成式世界模型。
@@ -78,7 +78,7 @@ export default function TeamPage() {
       </section>
 
       {/* Advisors Section */}
-      <section className="space-y-12">
+      {/* <section className="space-y-12">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">科学顾问委员会</h2>
           <div className="h-1 w-12 bg-primary/50 mx-auto rounded-full" />
@@ -104,7 +104,7 @@ export default function TeamPage() {
             </motion.div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* Team Stats */}
       <section className="bg-accent/5 rounded-2xl p-12 border border-accent/10">

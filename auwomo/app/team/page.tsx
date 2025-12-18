@@ -4,6 +4,23 @@ import { motion } from "framer-motion";
 import { User, Award, Users } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+const cofounders = [
+  {
+    code: "TZ",
+    name: "Tong Zhang",
+    role: "COFOUNDER & CHIEF SCIENTIST",
+    desc:
+      "Assistant Professor, University of Chinese Academy of Sciences. Postdoc at EPFL; Ph.D. at Australian National University. National High-Level Youth Talent & CAS Hundred Talents selectee. Microsoft Star Scholar. Area Chair (ICLR/NeurIPS/ICML). Recipient of BMVC 2025 Best Poster Award and CVPR 2020 Paper Award Nomination. Expertise: representation learning, 3D vision, and artificial life.",
+  },
+  {
+    code: "YD",
+    name: "Yao Di",
+    role: "COFOUNDER & COO",
+    desc:
+      "Engineering Management & Technology Entrepreneurship (EPF); Mechanical Engineering (EPF). PMP, PSM II. Senior Verification Manager at Ypsomed (core team for first digital health 510(k)). Former Operations Strategy Analyst at Merck (network-based Monte Carlo risk modeling) and Project Leader at Philip Morris (industrial robotics & vision deployments). Expertise: industrial robotics & vision, program management, regulatory compliance, and operations strategy.",
+  },
+] as const;
+
 const advisors = [
   {
     name: "Prof. Luc Van Gool",
@@ -63,7 +80,7 @@ export default function TeamPage() {
             <div className="md:col-span-2 space-y-4">
               <div>
                 <h2 className="text-2xl font-bold">Kaicheng Yu</h2>
-                <p className="text-primary font-medium">Principal Investigator / Founder</p>
+                <p className="text-primary font-medium">CEO / Founder</p>
               </div>
               <p className="text-muted-foreground">
                 Assistant Professor at Westlake University. His research focuses on robust neural architecture search, multi-modal sensor fusion, and generative world models for autonomous driving.
@@ -75,6 +92,43 @@ export default function TeamPage() {
             </div>
           </div>
         </motion.div>
+      </section>
+
+      {/* Co-Founders */}
+      <section className="space-y-12">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-2">Co-Founders</h2>
+          <div className="h-1 w-12 bg-primary/50 mx-auto rounded-full" />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {cofounders.map((p, index) => (
+            <motion.div
+              key={p.code}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.08 }}
+              className="h-full"
+            >
+              <Card className="h-full bg-background/50 backdrop-blur border-primary/10 hover:border-primary/30 transition-colors">
+                <CardHeader className="space-y-3">
+                  <div className="flex items-start gap-4">
+                    <div className="h-12 w-12 rounded-xl border border-border/60 bg-primary/5 text-primary flex items-center justify-center shrink-0">
+                      <span className="font-mono text-sm">{p.code}</span>
+                    </div>
+                    <div className="min-w-0">
+                      <CardTitle className="text-lg truncate">{p.name}</CardTitle>
+                      <p className="text-xs text-primary/80 font-semibold tracking-wide">{p.role}</p>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
       </section>
 
       {/* Advisors Section */}
