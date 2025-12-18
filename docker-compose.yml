@@ -1,0 +1,37 @@
+services:
+  auwomo:
+    build:
+      context: ./auwomo
+      dockerfile: Dockerfile
+    container_name: auwomo
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    expose:
+      - "3000"
+
+  westlake-data-intelligence:
+    build:
+      context: ./westlake-data-intelligence
+      dockerfile: Dockerfile
+    container_name: westlake-data-intelligence
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    expose:
+      - "3000"
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: nginx
+    restart: unless-stopped
+    depends_on:
+      - auwomo
+      - westlake-data-intelligence
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+
