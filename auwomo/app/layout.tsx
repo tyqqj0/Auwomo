@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Auwomo | Generative World Models for Autonomous Intelligence",
-  description: "Westlake Intelligence (Auwomo) - Building the generative data loop infrastructure for next-gen autonomous driving and embodied AI.",
+  description: "Auwomo - Building the generative data loop infrastructure for next-gen autonomous driving and embodied AI.",
 };
 
 export default function RootLayout({

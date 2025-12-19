@@ -18,7 +18,7 @@ export default function ContactPage() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        const recipient = "autolab.hr@westlake.edu.cn";
+        const recipient = "info@auwomo.ai";
         const subject = encodeURIComponent(`[Auwomo Inquiry] ${formData.subject}`);
         const body = encodeURIComponent(
             `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
@@ -66,9 +66,8 @@ export default function ContactPage() {
                             <div>
                                 <h3 className="font-semibold mb-1">Visit Us</h3>
                                 <p className="text-muted-foreground">
-                                    Westlake University, School of Engineering<br />
-                                    600 Dunyu Road, Sandun Town<br />
-                                    Xihu District, Hangzhou, Zhejiang, China
+                                    Auwomo GmbH<br />
+                                    Switzerland
                                 </p>
                             </div>
                         </div>
@@ -80,7 +79,7 @@ export default function ContactPage() {
                             <div>
                                 <h3 className="font-semibold mb-1">Email Us</h3>
                                 <p className="text-muted-foreground">
-                                    autolab.hr@westlake.edu.cn
+                                    info@auwomo.ai
                                 </p>
                             </div>
                         </div>

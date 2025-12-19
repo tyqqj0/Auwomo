@@ -30,14 +30,14 @@ export function Footer() {
         <div className="space-y-4">
           <h3 className="font-bold text-sm">Contact</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>Westlake University</li>
-            <li>Hangzhou, China</li>
-            <li>autolab.hr@westlake.edu.cn</li>
+            <li>Auwomo GmbH</li>
+            <li>Switzerland</li>
+            <li>info@auwomo.ai</li>
           </ul>
         </div>
       </div>
       <div className="container mx-auto px-4 mt-12 pt-8 border-t border-border/50 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Auwomo / Westlake Intelligence. All rights reserved.
+        © {new Date().getFullYear()} Auwomo. All rights reserved.
       </div>
     </footer>
   );
