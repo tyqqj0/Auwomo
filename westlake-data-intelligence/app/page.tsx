@@ -202,7 +202,7 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center items-center">
             <div className="space-y-3">
               <h3 className="text-3xl font-bold font-mono">Founded</h3>
-              <p className="text-xs text-muted-foreground uppercase tracking-[0.2em]">2023</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-[0.2em]">2026</p>
             </div>
             <div className="space-y-3">
               <h3 className="text-3xl font-bold font-mono">Sim2Real</h3>
