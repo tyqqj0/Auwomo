@@ -132,7 +132,7 @@ export default function TeamPage() {
       </section>
 
       {/* Advisors Section */}
-      <section className="space-y-12">
+      {/* <section className="space-y-12">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">Scientific Advisors</h2>
           <div className="h-1 w-12 bg-primary/50 mx-auto rounded-full" />
@@ -158,7 +158,7 @@ export default function TeamPage() {
             </motion.div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* Team Stats */}
       <section className="bg-accent/5 rounded-2xl p-12 border border-accent/10">
