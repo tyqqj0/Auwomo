@@ -17,7 +17,7 @@ const cofounders = [
     name: "Yao Di",
     role: "COFOUNDER & COO",
     desc:
-      "Engineering Management & Technology Entrepreneurship (EPF); Mechanical Engineering (EPF). PMP, PSM II. Senior Verification Manager at Ypsomed (core team for first digital health 510(k)). Former Operations Strategy Analyst at Merck (network-based Monte Carlo risk modeling) and Project Leader at Philip Morris (industrial robotics & vision deployments). Expertise: industrial robotics & vision, program management, regulatory compliance, and operations strategy.",
+      "ing. manag. techn. entrepr. dipl. EPF; ing. méc. dipl. EPF; PMP; PSM II. Senior Verification Manager at Ypsomed (core team for first digital health 510(k)). Former Operations Strategy Analyst at Merck (network-based Monte Carlo risk modeling) and Project Leader at Philip Morris (industrial robotics & vision deployments). Expertise: industrial robotics & vision, program management, regulatory compliance, and operations strategy.",
   },
 ] as const;
 
